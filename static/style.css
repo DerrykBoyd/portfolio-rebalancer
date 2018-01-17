@@ -1,0 +1,17 @@
+select {
+    color: purple;
+}
+
+.form-group, .form-control {
+    max-width: 100px;
+}
+
+#fund-col {
+    min-width: 100px;
+}
+
+.card, #fund-table {
+    width: 95%;
+    max-width: 70rem;
+    margin: 16px auto;
+}

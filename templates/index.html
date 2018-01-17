@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<!-- define our angular app -->
+<html ng-app="myApp" ng-controller="myCtrl">
+    <head>
+        <title>Portfolio Rebalancer</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- stylesheets -->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+        <link href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/pulse/bootstrap.min.css" rel="stylesheet" media="screen">
+    </head>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <h1 class="text-white" style="margin:auto;">Portfolio Rebalancer</h1>
+    </nav>
+    <body>
+        <div class="card border-primary mb-3">
+            <div class="card-body text-primary">
+                <h4 class="card-title">Welcome to the CCP Portfolio Rebalancer</h4>
+                <p class="card-text">Use this tool to rebalance your Canadian Couch Potato ETF portfolio</p>
+                <p>Test angular here {a alloc1 a}</p>
+            </div>
+        </div>
+        <div id="fund-table">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col" id="fund-col">Fund Ticker</th>
+                        <th scope="col">Current Price</th>
+                        <th scope="col">Shares Owned</th>
+                        <th scope="col">Target Allocation (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>
+                            <select class="form-control">
+                                <option>VAB</option>
+                                <option>VCN</option>
+                                <option>ZAG</option>
+                            </select>
+                        </th>
+                        <td>#TODO (price)</td>
+                        <td>
+                            <div class="form-group">
+                              <input type="number" min="0" class="form-control" placeholder="0" id="shares1">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                              <input ng-model="alloc1" ng-change="change1()" type="number" min="0" max="100" class="form-control" placeholder="0">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <select class="form-control">
+                                <option>VAB</option>
+                                <option selected>VCN</option>
+                                <option>ZAG</option>
+                            </select>
+                        </th>
+                        <td>#TODO (price)</td>
+                        <td>
+                            <div class="form-group">
+                              <input type="number" min="0" class="form-control" placeholder="0" id="shares2">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                              <input type="number" ng-model="alloc2" ng-change="change2()" min="0" max="100" class="form-control">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <select class="form-control">
+                                <option>VAB</option>
+                                <option>VCN</option>
+                                <option selected>ZAG</option>
+                            </select>
+                        </th>
+                        <td>#TODO (price)</td>
+                        <td>
+                            <div class="form-group">
+                              <input type="number" min="0" class="form-control" placeholder="0" id="shares3">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                              <input type="number" value="{a alloc3 a}" min="0" max="100" class="form-control" readonly>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+    <!-- scripts -->
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+    <script src="{{ url_for('static', filename='rebalancer.js') }}"></script>
+</html>
