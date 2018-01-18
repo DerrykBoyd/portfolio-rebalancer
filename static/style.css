@@ -1,10 +1,14 @@
-#main-title>img, #main-title>h1 {
+#main-title>img, #main-title>h2 {
     display: inline-block;
+}
+
+#main-title>h2 {
+    margin-top: 8px;
 }
 
 #main-title>img {
     margin-bottom: 8px;
-    margin-right: 25px;
+    margin-right: 16px;
 }
 
 .form-group, .form-control {
