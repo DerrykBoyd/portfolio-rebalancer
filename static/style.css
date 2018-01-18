@@ -1,17 +1,33 @@
-select {
-    color: purple;
+#main-title>img, #main-title>h1 {
+    display: inline-block;
+}
+
+#main-title>img {
+    margin-bottom: 8px;
+    margin-right: 25px;
 }
 
 .form-group, .form-control {
     max-width: 100px;
+    margin: auto;
 }
 
 #fund-col {
     min-width: 100px;
 }
 
-.card, #fund-table {
+.card, #fund-table{
     width: 95%;
     max-width: 70rem;
     margin: 16px auto;
+}
+
+#main-title {
+    width: 95%;
+    max-width: 70rem;
+    margin: auto;
+}
+
+thead>tr>th {
+    text-align: center;
 }

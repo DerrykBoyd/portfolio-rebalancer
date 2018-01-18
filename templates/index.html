@@ -3,6 +3,12 @@
 <html ng-app="myApp" ng-controller="myCtrl">
     <head>
         <title>Portfolio Rebalancer</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
+        <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+        <link rel="mask-icon" href="{{ url_for('static', filename='safari-pinned-tab.svg') }}" color="#5a2e94">
+        <meta name="theme-color" content="#ffffff">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- stylesheets -->
@@ -10,14 +16,16 @@
         <link href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/pulse/bootstrap.min.css" rel="stylesheet" media="screen">
     </head>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <h1 class="text-white" style="margin:auto;">Portfolio Rebalancer</h1>
+        <div id="main-title" >
+            <img src="/static/navbar-img.png">
+            <h1 class="text-white">Portfolio Rebalancer</h1>
+        </div>      
     </nav>
     <body>
         <div class="card border-primary mb-3">
             <div class="card-body text-primary">
                 <h4 class="card-title">Welcome to the CCP Portfolio Rebalancer</h4>
                 <p class="card-text">Use this tool to rebalance your Canadian Couch Potato ETF portfolio</p>
-                <p>Test angular here {a alloc1 a}</p>
             </div>
         </div>
         <div id="fund-table">
@@ -39,10 +47,12 @@
                                 <option>ZAG</option>
                             </select>
                         </th>
-                        <td>#TODO (price)</td>
+                        <td>
+                            <input type="number" step="0.01" min="0" class="form-control" placeholder="0" id="price1">
+                        </td>
                         <td>
                             <div class="form-group">
-                              <input type="number" min="0" class="form-control" placeholder="0" id="shares1">
+                              <input type="number" step="0.01" min="0" class="form-control" placeholder="0" id="shares1">
                             </div>
                         </td>
                         <td>
@@ -59,7 +69,9 @@
                                 <option>ZAG</option>
                             </select>
                         </th>
-                        <td>#TODO (price)</td>
+                        <td>
+                            <input type="number" step="0.01" min="0" class="form-control" placeholder="0" id="price2">
+                        </td>
                         <td>
                             <div class="form-group">
                               <input type="number" min="0" class="form-control" placeholder="0" id="shares2">
@@ -79,7 +91,9 @@
                                 <option selected>ZAG</option>
                             </select>
                         </th>
-                        <td>#TODO (price)</td>
+                        <td>
+                            <input type="number" step="0.01" min="0" class="form-control" placeholder="0" id="price3">
+                        </td>
                         <td>
                             <div class="form-group">
                               <input type="number" min="0" class="form-control" placeholder="0" id="shares3">
@@ -96,8 +110,8 @@
         </div>
     </body>
     <!-- scripts -->
-    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
     <script src="{{ url_for('static', filename='rebalancer.js') }}"></script>
 </html>
