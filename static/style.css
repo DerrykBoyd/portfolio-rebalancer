@@ -7,8 +7,9 @@
 }
 
 #main-title>img {
+    height: 40px;
     margin-bottom: 8px;
-    margin-right: 16px;
+    margin-right: 8px;
 }
 
 .form-group, .form-control {
