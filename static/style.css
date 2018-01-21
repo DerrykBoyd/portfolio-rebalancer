@@ -12,19 +12,37 @@
     margin-right: 8px;
 }
 
-.form-group, .form-control {
-    max-width: 100px;
+.form-control {
+    max-width: 125px;
+    min-width: 60px;
     margin: auto;
+}
+
+.custom-select {
+    max-width: 150px;
+}
+
+#cash {
+    max-width: 120px;
+    margin-left: 0;
 }
 
 #fund-col {
     min-width: 100px;
 }
 
-.card, #fund-table{
-    width: 95%;
+#content {
+    width:95%;
+    margin:auto;
+}
+
+.card {
     max-width: 70rem;
     margin: 16px auto;
+}
+
+#options {
+    margin-top: 1.5rem;
 }
 
 #main-title {
@@ -35,4 +53,30 @@
 
 thead>tr>th {
     text-align: center;
+}
+
+.angular-with-newlines {
+    white-space: pre-wrap;
+}
+
+.control-label {
+    font-size: 1.1rem;
+}
+
+.col-md-7 {
+    align-items: center;
+    display: flex;
+}
+
+#rebal-button {
+    margin-top: 1rem;
+}
+
+h4 {
+    text-decoration: underline;
+}
+
+#intro, #options{
+    margin-top: 1.25rem;
+    margin-bottom: 1.75rem;
 }
