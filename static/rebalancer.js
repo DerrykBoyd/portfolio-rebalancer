@@ -8,7 +8,9 @@ var app = angular.module('myApp', []);
     app.controller('myCtrl', function ($scope) {
         $scope.target = "Target Allocation (%)";
         // cash to allocate
-        $scope.cash = 0;
+        $scope.cash = '';
+        // cash left after rebalance
+        $scope.cashRem = '';
         //type of rebalance
         $scope.rebalanceType = "Buy Only";
         //create array to store funds
@@ -81,6 +83,9 @@ var app = angular.module('myApp', []);
         $scope.rebalance = function() {
             var funds = $scope.funds;
             var totalToTarget = 0;
+            fundBal = function(fund) {
+                return (fund.shares + fund.toShares) * fund.price
+            }
             if ($scope.rebalanceType == "Buy Only") {
                 //sort funds largest to smallest
                 funds.sort(function(a, b) {
@@ -109,6 +114,53 @@ var app = angular.module('myApp', []);
                 }
                 //set shares to purchase
                 for (var i = 0; i < funds.length; i++) {
+                    var leftover = 0;
+                    if (funds[i].price==0) {
+                        break;
+                    }
+                    funds[i].toShares = Math.floor(funds[i].toPurchase / funds[i].price);
+                    if (i < funds.length-1) {
+                        leftover = funds[i].toPurchase % funds[i].price;
+                        funds[i+1].toPurchase += leftover;
+                    }
+                    if (i == funds.length-1) {
+                        var cashRem = funds[i].toPurchase % funds[i].price + leftover
+                        $scope.cashRem = cashRem.toFixed(2);
+                    }
+                }
+                //set new allocation values
+                var totalBal = 0;
+                for (var i = 0; i < funds.length; i++) {
+                    totalBal += fundBal(funds[i]);
+                }
+                for (var i = 0; i < funds.length; i++) {
+                    if (funds[i].price==0) {
+                        break;
+                    }
+                    newAlloc = fundBal(funds[i]) / totalBal * 100;
+                    funds[i].newAlloc = newAlloc.toFixed(1) + " %";
+                }
+                console.log("Buy only is working")
+            }
+            if ($scope.rebalanceType == "Buy & Sell") {
+                //set target values
+                for (var i=0; i<funds.length; i++) {
+                    funds[i].targetVal = ($scope.holdings() + $scope.cash) * funds[i].alloc / 100;
+                }
+                //set $ toTarget
+                for (var i=0; i<funds.length; i++) {
+                    funds[i].toTarget = funds[i].targetVal - (funds[i].price * funds[i].shares);
+                    totalToTarget += funds[i].toTarget;
+                }
+                //set $ toPurchase
+                for (var i=0; i<funds.length; i++) {
+                    funds[i].toPurchase = funds[i].toTarget / totalToTarget * $scope.cash;
+                }
+                //set shares to purchase
+                for (var i = 0; i < funds.length; i++) {
+                    if (funds[i].price==0) {
+                        break;
+                    }
                     funds[i].toShares = Math.floor(funds[i].toPurchase / funds[i].price);
                     if (i < funds.length-1) {
                         var leftover = funds[i].toPurchase % funds[i].price;
@@ -117,17 +169,17 @@ var app = angular.module('myApp', []);
                 }
                 //set new allocation values
                 var totalBal = 0;
-                fundBal = function(fund) {
-                    return (fund.shares + fund.toShares) * fund.price
-                }
                 for (var i = 0; i < funds.length; i++) {
                     totalBal += fundBal(funds[i]);
                 }
                 for (var i = 0; i < funds.length; i++) {
+                    if (funds[i].price==0) {
+                        break;
+                    }
                     newAlloc = fundBal(funds[i]) / totalBal * 100;
                     funds[i].newAlloc = newAlloc.toFixed(1) + " %";
                 }
-                console.log("Buy only is working")
+                console.log("Buy & Sell is working")
             }
         }
     });
