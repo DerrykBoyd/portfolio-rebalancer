@@ -15,7 +15,6 @@
 .form-control {
     max-width: 125px;
     min-width: 60px;
-    margin: auto;
 }
 
 .custom-select {
@@ -52,10 +51,6 @@
     margin: auto;
 }
 
-thead>tr>th {
-    text-align: center;
-}
-
 .angular-with-newlines {
     white-space: pre-wrap;
 }
@@ -71,7 +66,6 @@ thead>tr>th {
 
 #button-area {
     display: flex;
-    text-align: center;
     align-items: center;
     margin-bottom: 1rem;
 }
