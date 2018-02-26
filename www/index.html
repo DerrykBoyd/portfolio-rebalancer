@@ -3,22 +3,22 @@
 <html ng-app="myApp" ng-controller="myCtrl">
     <head>
         <title>Portfolio Rebalancer</title>
-        <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
-        <link rel="manifest" href="/static/manifest.json">
-        <link rel="mask-icon" href="/static/safari-pinned-tab.svg" color="#5a2e94">
-        <link rel="shortcut icon" href="/static/favicon.ico">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/manifest.json">
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5a2e94">
+        <link rel="shortcut icon" href="/favicon.ico">
         <meta name="theme-color" content="#ffffff">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- stylesheets -->
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
         <link href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/pulse/bootstrap.min.css" rel="stylesheet" media="screen">
     </head>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div id="main-title" >
-            <img src="/static/navbar-img.png">
+            <img src="images/navbar-img.png">
             <h2 class="text-white">Portfolio Rebalancer</h2>
         </div>      
     </nav>
@@ -113,5 +113,5 @@
     <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
-    <script src="{{ url_for('static', filename='rebalancer.js') }}"></script>
+    <script src="js/rebalancer.js"></script>
 </html>
