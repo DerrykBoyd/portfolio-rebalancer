@@ -34,8 +34,10 @@
             <div id="fund-table" class="text-primary mb-3 container col-12 table-responsive">
                 <div>
                     <h4 id="cur-alloc">Current Holdings</h4>
-                    <button type="button" ng-click="refreshPrices()" id="refresh-button" class="btn btn-outline-primary btn-lg fund-btn">Refresh Prices<i id="refresh-sym" class="fas fa-sync-alt"></i></button>
-                    <button type="button" ng-click="addFund()" id="fund-button" class="btn btn-outline-primary btn-lg fund-btn">Add Fund<i id="add-sym" class="fas fa-plus"></i></button>                    
+                    <div id="holding-btns">
+                        <button type="button" ng-click="refreshPrices()" id="refresh-button" class="btn btn-outline-primary btn-lg fund-btn">Refresh Prices<i id="refresh-sym" class="fas fa-sync-alt"></i></button>
+                        <button type="button" ng-click="addFund()" id="fund-button" class="btn btn-outline-primary btn-lg fund-btn">Add Fund<i id="add-sym" class="fas fa-plus"></i></button>                            
+                    </div>
                 </div>
                 <table id="holdings" class="table table-hover col-12">
                     <thead>

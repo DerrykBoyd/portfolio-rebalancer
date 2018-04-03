@@ -73,6 +73,7 @@
 h4 {
     text-decoration: underline;
     display: inline-block;
+    margin-left: 1rem;
 }
 
 #intro, #options{
@@ -105,9 +106,13 @@ h4 {
 
 #fund-button, #refresh-button {
     display: inline;
-    margin: 0.5rem 1rem;
+    margin: 0.5rem 0 0.5rem 1rem;
     padding: 0.25rem 0.5rem;
     font-size: 0.9rem;
+}
+
+#holding-btns {
+    display: inline-block;
 }
 
 #remove-button {
