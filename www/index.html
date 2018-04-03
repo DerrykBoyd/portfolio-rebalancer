@@ -15,6 +15,7 @@
         <!-- stylesheets -->
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <link href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/pulse/bootstrap.min.css" rel="stylesheet" media="screen">
+        <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
     </head>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div id="main-title" >
@@ -24,86 +25,95 @@
     </nav>
     <body>
         <div id="content">
-            <div id="intro">
+            <!--<div id="intro">
                 <div class="text-primary col-12">
                     <h4 class="card-title">Welcome to the CCP Portfolio Rebalancer</h4>
                     <p class="card-text">Use this tool to rebalance your Canadian Couch Potato ETF portfolio</p>
                 </div>
-            </div>
+            </div>-->
             <div id="fund-table" class="text-primary mb-3 container col-12 table-responsive">
-                <h4>Current Allocations</h4>
-                <table class="table table-hover col-12">
+                <div>
+                    <h4 id="cur-alloc">Current Holdings</h4>
+                    <button type="button" ng-click="refreshPrices()" id="refresh-button" class="btn btn-outline-primary btn-lg fund-btn">Refresh Prices<i id="refresh-sym" class="fas fa-sync-alt"></i></button>
+                    <button type="button" ng-click="addFund()" id="fund-button" class="btn btn-outline-primary btn-lg fund-btn">Add Fund<i id="add-sym" class="fas fa-plus"></i></button>                    
+                </div>
+                <table id="holdings" class="table table-hover col-12">
                     <thead>
                         <tr>
                             <th scope="col" id="fund-col">Fund Ticker</th>
                             <th scope="col">Current Price</th>
                             <th scope="col">Shares Owned</th>
                             <th scope="col" ng-bind="target" class="angular-with-newlines"></th>
+                            <th class="remove-cell"></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="fund in funds">
-                            <th><input type="text" ng-model="fund.ticker" class="form-control"></th>
-                            <td><input type="number" ng-model="fund.price" step="0.01" min="0" class="form-control" placeholder="0"></td>
+                            <td><input type="text" ng-model="fund.ticker" ng-change="refreshPrice(fund)" ng-model-options="{debounce: 2000}" class="form-control"></td>
+                            <td><input id="current-price" ng-model="fund.price" step="0.01" min="0" class="form-control" placeholder="..."></td>
                             <td><input type="number" ng-model="fund.shares" min="0" class="form-control" placeholder="0"></td>
-                            <td><input type="number" ng-model="fund.alloc" ng-change="change({a $index a})" min="0" max="100" class="form-control" ng-class="invalidForm" ng-readonly="$last"></td>
+                            <td><input type="number" ng-model="fund.alloc" ng-change="change({{ $index }})" min="0" max="100" class="form-control table-inline" ng-class="invalidForm"></td>
+                            <td class="remove-cell"><button type="button" ng-click="removeFund($index)" id="remove-button" class="btn btn-link remove-btn"><i id="rmv-sym" class="fas fa-minus-circle"></i></td>
                     </tbody>
                 </table>
+                <p id="stock-warning">Unable to fetch some prices, please check stock ticker or enter manually.</p>
             </div>
             <div id="options">
                 <div class="text-primary col-12">
                     <h4>Options</h4>
-                    <div class="row col-12">
-                        <div class="col-md-3">
-                            <label class="control-label text-primary">Cash to distribute</label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
+                    <div class="flex-container">
+                        <div class="option">
+                                <label class="control-label text-primary">Cash Available</label>
+                                <div class="input-group option">
+                                    <div class="input-group-prepend">
+                                    <span class="input-group-text">$</span>
+                                    </div>
+                                    <input id="cash" type="number" placeholder="0" ng-model="cash" step="0.01" min="0" class="form-control">
                                 </div>
-                                <input id="cash" type="number" placeholder="0" ng-model="cash" step="0.01" min="0" class="form-control">
                             </div>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label class="control-label text-primary">Rebalance type</label>
-                            <div class="input-group mb-3">
-                                <select class="custom-select" ng-model="rebalanceType">
-                                    <option selected>Buy Only</option>
-                                    <option >Buy & Sell</option>
-                                </select>
+                        <div class="form-group option">
+                                <label class="control-label text-primary">Rebalance type</label>
+                                <div class="input-group option">
+                                    <select class="custom-select" ng-model="rebalanceType">
+                                        <option selected>Buy Only</option>
+                                        <option >Buy & Sell</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div id="button-area" class="col-md-3">
-                            <button type="button" ng-click="rebalance()" id="rebal-button" class="btn btn-primary btn-lg">Calculate</button>
-                        </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group option">
                                 <label class="control-label text-primary">Cash Remaining</label>
-                                <div class="input-group mb-3">
+                                <div class="input-group option">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">$</span>
                                     </div>
                                     <input readonly id="cash" type="text" ng-model="cashRem" class="form-control">
                                 </div>
                             </div>
+                        <div id="button-area" class="option">
+                                <button type="button" ng-click="rebalance()" id="rebal-button" class="btn btn-outline-primary btn-lg">Calculate</button>
+                            </div>
                     </div>
                 </div>
             </div>
-            <div id="rebalance-results" class="text-primary mb-3 container col-12 table-responsive">
+            <div id="rebalance-results" class="text-primary container col-12 table-responsive">
                 <h4>Results</h4>
-                <table class="table table-hover col-12">
+                <table id="results" class="table table-hover col-12">
                     <thead>
                         <tr>
                             <th scope="col" id="fund-col">Fund Ticker</th>
                             <th scope="col">Current Allocation</th>
                             <th scope="col">Buy / Sell (Shares)</th>
                             <th scope="col" class="angular-with-newlines">New Allocation</th>
+                            <th class="remove-cell"></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="fund in funds">
                             <th><input readonly type="text" ng-model="fund.ticker" class="form-control"></th>
-                            <td><input readonly type="text" value="{a currAlloc(fund) a}" class="form-control"></td>
-                            <td><input readonly type="text" value="{a fund.toShares a}" class="form-control"></td>
-                            <td><input readonly type="text" value="{a fund.newAlloc a}" class="form-control"></td>
+                            <td><input readonly type="text" value="{{ currAlloc(fund) }}" class="form-control"></td>
+                            <td><input readonly type="text" value="{{ fund.toShares }}" class="form-control"></td>
+                            <td><input readonly type="text" value="{{ fund.newAlloc }}" class="form-control"></td>
+                            <td class="remove-cell"></td>
                     </tbody>
                 </table>
             </div>
