@@ -1,7 +1,7 @@
 var app = angular.module('myApp', []);
 
     app.controller('myCtrl', function ($scope, $http) {
-        //function to get the fund price if available through AlphaVantage
+        // function to get the fund price if available through AlphaVantage
         function getPrice(fund) {
             $http({
                 method: 'GET',
@@ -19,13 +19,13 @@ var app = angular.module('myApp', []);
                 showStockWarning();
             }, function errorCallback(response) {
                 //error code here
-                console.log('API call error occurred');
+                console.log('API call error occurred: ' + response);
             });
         }
         //show warning if fund price isn't fetched
         function showStockWarning() {
             var count = 0;
-            for(fund in $scope.funds) {
+            for(var fund in $scope.funds) {
                 if ($scope.funds[fund].price == "Not Available") count++;
             }
             if (count == 0) document.getElementById("stock-warning").style.display="none";
@@ -40,7 +40,7 @@ var app = angular.module('myApp', []);
         }
         //refresh prices for all funds
         $scope.refreshPrices = function() {
-            for (fund in $scope.funds) {
+            for (var fund in $scope.funds) {
                 $scope.funds[fund].price = "fetching...";
                 getPrice($scope.funds[fund]);
             }
@@ -56,7 +56,7 @@ var app = angular.module('myApp', []);
         //create array to store funds
         $scope.funds = [];
         //function to create a new fund
-        $scope.addFund = function(ticker = '', alloc = '') {
+        $scope.addFund = function(ticker, alloc) {
             $scope.funds.push({
                 ticker: ticker,
                 price: "",
@@ -132,7 +132,7 @@ var app = angular.module('myApp', []);
         $scope.rebalance = function() {
             var funds = $scope.funds;
             var totalToTarget = 0;
-            fundBal = function(fund) {
+            var fundBal = function(fund) {
                 return (fund.shares + fund.toShares) * fund.price
             }
             if ($scope.rebalanceType == "Buy Only") {
@@ -145,7 +145,7 @@ var app = angular.module('myApp', []);
                     funds[i].targetVal = ($scope.holdings() + $scope.cash) * funds[i].alloc / 100;
                 }
                 //set $ toTarget (0 if negative)
-                for (var i=0; i<funds.length; i++) {
+                for (i=0; i<funds.length; i++) {
                     if (funds[i].targetVal - (funds[i].price * funds[i].shares) <= 0) {
                         funds[i].toTarget = 0;
                     } else {
@@ -154,7 +154,7 @@ var app = angular.module('myApp', []);
                     totalToTarget += funds[i].toTarget;
                 }
                 //set $ toPurchase (0 if toTarget = 0)
-                for (var i=0; i<funds.length; i++) {
+                for (i=0; i<funds.length; i++) {
                     if (funds[i].toTarget == 0) {
                         funds[i].toPurchase = 0;
                     } else {
@@ -162,7 +162,7 @@ var app = angular.module('myApp', []);
                     }
                 }
                 //set shares to purchase
-                for (var i = 0; i < funds.length; i++) {
+                for (i = 0; i < funds.length; i++) {
                     var leftover = 0;
                     if (funds[i].price==0) {
                         break;
@@ -179,14 +179,14 @@ var app = angular.module('myApp', []);
                 }
                 //set new allocation values
                 var totalBal = 0;
-                for (var i = 0; i < funds.length; i++) {
+                for (i = 0; i < funds.length; i++) {
                     totalBal += fundBal(funds[i]);
                 }
-                for (var i = 0; i < funds.length; i++) {
+                for (i = 0; i < funds.length; i++) {
                     if (funds[i].price==0) {
                         break;
                     }
-                    newAlloc = fundBal(funds[i]) / totalBal * 100;
+                    var newAlloc = fundBal(funds[i]) / totalBal * 100;
                     funds[i].newAlloc = newAlloc.toFixed(1) + " %";
                 }
                 console.log("Buy only is working")
@@ -199,14 +199,14 @@ var app = angular.module('myApp', []);
                 //set total cash available
                 var totalCash = $scope.holdings() + $scope.cash;
                 //set targetShares and shares to purchase
-                for (var i=0; i<funds.length; i++) {
+                for (i=0; i<funds.length; i++) {
                     funds[i].targetShares = Math.floor(totalCash * (funds[i].alloc / 100) / funds[i].price);
                     funds[i].toShares = funds[i].targetShares - funds[i].shares;
                     console.log("Target Shares = " + funds[i].targetShares);
                     console.log("Target Shares to purchase = " + funds[i].toShares);
                 }
                 //purchase shares
-                for (var i = 0; i < funds.length; i++) {
+                for (i = 0; i < funds.length; i++) {
                     if (funds[i].price==0) {
                         break;
                     }
@@ -214,11 +214,11 @@ var app = angular.module('myApp', []);
                     $scope.cashRem = totalCash.toFixed(2);
                 }
                 //set new allocation values
-                var totalBal = 0;
-                for (var i = 0; i < funds.length; i++) {
+                totalBal = 0;
+                for (i = 0; i < funds.length; i++) {
                     totalBal += fundBal(funds[i]);
                 }
-                for (var i = 0; i < funds.length; i++) {
+                for (i = 0; i < funds.length; i++) {
                     if (funds[i].price==0) {
                         break;
                     }
