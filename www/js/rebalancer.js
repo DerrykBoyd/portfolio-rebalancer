@@ -22,7 +22,7 @@ var app = angular.module('myApp', []);
                 console.log('API call error occurred');
             });
         }
-
+        //show warning if fund price isn't fetched
         function showStockWarning() {
             var count = 0;
             for(fund in $scope.funds) {
@@ -31,14 +31,14 @@ var app = angular.module('myApp', []);
             if (count == 0) document.getElementById("stock-warning").style.display="none";
             else document.getElementById("stock-warning").style.display="block";
         }
-
+        //refresh price for single fund
         $scope.refreshPrice = function(fund) {
             if (fund) {
                 fund.price = "fetching...";
                 getPrice(fund);
             }
         }
-
+        //refresh prices for all funds
         $scope.refreshPrices = function() {
             for (fund in $scope.funds) {
                 $scope.funds[fund].price = "fetching...";
@@ -74,7 +74,7 @@ var app = angular.module('myApp', []);
         $scope.removeFund = function(index) {
             $scope.funds.splice(index, 1);
         }
-        //total holdings before rebalance
+        //total holdings before rebalance, returns sum of all stock values
         $scope.holdings = function() {
             var total = 0;
             var funds = $scope.funds;
@@ -83,11 +83,10 @@ var app = angular.module('myApp', []);
             }
             return total;
         }
-        //add default funds
+        //add default funds and get prices on page load
         $scope.addFund('ZAG', 40);
         $scope.addFund('VCN', 20);
         $scope.addFund('XAW', 40);
-
         $scope.refreshPrices();
 
         //auto calc allocations on user inputs (works for 3 funds only)

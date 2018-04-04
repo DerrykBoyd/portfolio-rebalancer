@@ -115,7 +115,7 @@ h4 {
     display: inline-block;
 }
 
-#remove-button {
+#remove-button, #refresh-fund {
     display: inline;
     margin: 0;
     padding: 0;
@@ -147,4 +147,18 @@ nav {
 
 .table-inline {
     display: inline-block !important;
+}
+
+#current-price {
+    display: inline;
+    margin: 0 0.25rem 0.25rem 0;
+}
+
+#refresh-col {
+    padding: 0;
+    vertical-align: middle;
+}
+
+#cur-price-col {
+    padding-left: 0.25rem;
 }
