@@ -47,17 +47,78 @@ var app = angular.module('myApp', []);
         }
 
         $scope.target = "Target Allocation (%)";
-        // cash to allocate
-        $scope.cash = '';
-        // cash left after rebalance
-        $scope.cashRem = '';
-        //type of rebalance
-        $scope.rebalanceType = "Buy Only";
-        //create array to store funds
-        $scope.funds = [];
+
+        // object to store portfolios
+        $scope.portfolios = [
+            {
+                name: "Portfolio 1",
+                cash: 0,
+                cashRem: "",
+                rebalanceType: "Buy Only",
+                totalVal: 0,
+                allocGroups: [
+                    {
+                    name: "Canada Stocks",
+                    allocation: 0,
+                    funds: []
+                    },
+                    {
+                    name: "World Stocks",
+                    allocation: 0,
+                    funds: []
+                    },
+                    {
+                    name: "Bonds",
+                    allocation: 0,
+                    funds: []
+                    }
+                ]
+            }       
+        ]
+        // function to add and allocation group
+        $scope.addAllocGroup = function() {
+            $scope.portfolios[$scope.selectedIndex].allocGroups.push(
+                {
+                    name: "",
+                    allocation: 0,
+                    funds: []
+                }
+            )
+        }
+        // function to delete an allocation group
+        $scope.deleteAllocGroup = function(index) {
+            $scope.portfolios[$scope.selectedIndex].allocGroups.splice(index, 1);
+        }
+        // code for highlighting selected portfolio
+        $scope.selectedIndex = 0;
+
+        $scope.select= function(i) {
+            $scope.selectedIndex=i;
+        };
+        // function to add a new portfolio
+        $scope.addPortfolio = function() {
+            var portfolios = $scope.portfolios;
+            var num = portfolios.length+1;
+            portfolios.push(
+                {
+                    name: "Portfolio " + num,
+                    cash: 0,
+                    cashRem: "",
+                    rebalanceType: "Buy Only",
+                    totalVal: 0,
+                    allocGroups: []
+                }
+            )
+            $scope.selectedIndex = portfolios.length-1;
+        }
+        // function to delete a portfolio
+        $scope.deletePortfolio = function(index) {
+            $scope.portfolios.splice(index, 1);
+            if (index > 0) $scope.selectedIndex -= 1;
+        }
         //function to create a new fund
-        $scope.addFund = function(ticker, alloc) {
-            $scope.funds.push({
+        $scope.addFund = function(pIndex, aIndex, ticker, alloc) {
+            $scope.portfolios[pIndex].allocGroups[aIndex].funds.push({
                 ticker: ticker,
                 price: "",
                 shares: "",
@@ -71,8 +132,8 @@ var app = angular.module('myApp', []);
             })
         }
         //function to remove a fund
-        $scope.removeFund = function(index) {
-            $scope.funds.splice(index, 1);
+        $scope.removeFund = function(pIndex, aIndex, fIndex) {
+            $scope.portfolios[pIndex].allocGroups[aIndex].funds.splice(fIndex, 1);
         }
         //total holdings before rebalance, returns sum of all stock values
         $scope.holdings = function() {
@@ -84,9 +145,9 @@ var app = angular.module('myApp', []);
             return total;
         }
         //add default funds and get prices on page load
-        $scope.addFund('ZAG', 40);
-        $scope.addFund('VCN', 20);
-        $scope.addFund('XAW', 40);
+        $scope.addFund(0, 0, 'ZAG', 40);
+        $scope.addFund(0, 0, 'VCN', 20);
+        $scope.addFund(0, 0, 'XAW', 40);
         $scope.refreshPrices();
 
         //auto calc allocations on user inputs (works for 3 funds only)

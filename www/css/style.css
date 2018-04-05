@@ -12,9 +12,26 @@
     margin-right: 8px;
 }
 
+.nav-tabs {
+    font-size: 1.25rem;
+}
+
+#title-tab {
+    font-weight: bold;
+}
+
+#title-tab:hover {
+    border: 1px solid transparent;
+    border-width: 0 0 1px 0;
+}
+
 .form-control {
-    max-width: 125px;
-    min-width: 60px;
+    max-width: 160px;
+    margin-right: 0.5rem;
+}
+
+.alloc-name {
+    max-width: 300px;
 }
 
 .custom-select {
@@ -30,20 +47,22 @@
     min-width: 100px;
 }
 
+.inline-label {
+    margin-right: 0.5rem;
+}
+
 #content {
     width:95%;
     margin:auto;
-    max-width: 60rem;
+    max-width: 50rem;
 }
 
 .card {
-    max-width: 70rem;
     margin: 16px auto;
 }
 
 #main-title {
     width: auto;
-    max-width: 70rem;
     margin: auto;
 }
 
@@ -55,43 +74,47 @@
     font-size: 1.1rem;
 }
 
-#button-area {
-    display: flex;
+.button-area {
     align-items: center;
-    margin-bottom: 1rem;
     vertical-align: bottom;
 }
 
-#rebal-button {
-    margin: auto;
-    margin-bottom: 0;
-    margin-left: 0;
+.delete-button {
+    margin-top: 25px;
     padding: 0.25rem 0.5rem;
     font-size: 1rem;
+}
+
+.card {
+    border-radius: 10px;
 }
 
 h4 {
     text-decoration: underline;
     display: inline-block;
-    margin-left: 1rem;
-}
-
-#intro, #options{
-    margin-top: 1rem;
-    margin-bottom: 1rem;
 }
 
 .flex-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    padding-left: 12px;
 }
 
 .option {
     width: 160px;
     margin-right: 15px;
-    vertical-align: bottom;
+    display: table-cell;
+}
+
+.option-group {
+    max-width: 320px;
+    display: table;
+    padding-bottom: 0.75rem;
+    margin-right: 0.5rem;
+}
+
+#name {
+    max-width: 150px;
 }
 
 #stock-warning {
@@ -104,11 +127,10 @@ h4 {
     margin-bottom: 0.5rem !important;
 }
 
-#fund-button, #refresh-button {
+#fund-button {
     display: inline;
-    margin: 0.5rem 0 0.5rem 1rem;
     padding: 0.25rem 0.5rem;
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
 
 #holding-btns {
@@ -161,4 +183,49 @@ nav {
 
 #cur-price-col {
     padding-left: 0.25rem;
+}
+
+.alloc-input {
+    margin-right: 0;
+}
+
+#delete-alloc-group {
+    margin-left: 0.75rem;
+    margin-top: 20px;
+}
+
+#alloc-card {
+    padding : 0.75rem;
+}
+
+#fund-card {
+    padding: 0.75rem;
+    margin-top: 0;
+}
+
+#ticker-input, #price-input, #shares-input {
+    width: 100%;
+}
+
+#delete-fund {
+    margin: 35px 10px 0 20px;
+    cursor: pointer;
+}
+
+.flex-item {
+    flex: 1 0 100px;
+}
+
+.flex-item-title {
+    flex: 1 0 140px;
+    margin-right: 0.75rem;
+}
+
+.flex-item-options {
+    flex: 1 0 125px;
+    margin-right: 0.75rem;
+}
+
+#options-top, #options-bottom {
+    padding: 0.75rem;
 }
