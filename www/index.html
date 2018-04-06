@@ -101,6 +101,11 @@
             </div>
             <div id="alloc-card" class="card-body">
                 <div id="fund-card" class="card bg-light" ng-repeat="fund in alloc.funds">
+                    <div id="delete-fund" ng-click="removeFund(selectedIndex, aIndex, $index)">
+                        <h5>
+                            <i class="far fa-trash-alt text-danger"></i>
+                        </h5>
+                    </div>
                     <div class="flex-container">
                         <div class="flex-item">
                             <label class="control-label">Ticker</label>
@@ -109,10 +114,10 @@
                             </div>
                         </div>
                         <div class="flex-item">
-                            <label class="control-label">Price 
+                            <label class="control-label">Price
                                 <span ng-click="refreshPrice(fund)">
                                     <i id="refresh-fund" class="fas fa-sync-alt"></i>
-                                </span>  
+                                </span>
                             </label>
                             <div id="price-input" class="input-group">
                                 <input id="current-price" ng-model="fund.price" step="0.01" min="0" class="form-control" placeholder="...">
@@ -133,12 +138,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="delete-fund" ng-click="removeFund(selectedIndex, aIndex, $index)">
-                            <h5>
-                                <i class="far fa-trash-alt text-danger"></i>
-                            </h5>
-                        </div>
-
                     </div>
                 </div>
                 <div id="options" class="flex-container">
