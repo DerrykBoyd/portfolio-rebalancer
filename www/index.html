@@ -44,15 +44,15 @@
         <div id="options-top" class="card-body">
             <div class="flex-container">
                 <div class="flex-item-options">
-                    <div class="option form-inline">
+                    <div class="form-inline">
                         <label class="control-label text-primary">Name</label>
                         <input id="name" type="text" ng-model="portfolios[selectedIndex].name" class="form-control">
                     </div>
                 </div>
                 <div class="flex-item-options">
-                    <div class="option form-inline">
+                    <div class="form-inline">
                         <label class="control-label text-primary">Cash Available</label>
-                        <div class="input-group option">
+                        <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">$</span>
                             </div>
@@ -61,34 +61,32 @@
                     </div>
                 </div>
                 <div class="flex-item-options">
-                    <div class="option-group">
-                        <div class="form-group option form-inline">
-                            <label class="control-label text-primary">Total Value</label>
-                            <div class="input-group option">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">$</span>
-                                </div>
-                                <input readonly id="total-val" type="text" ng-model="portfolios[selectedIndex].totalVal" class="form-control">
+                    <div class="form-inline">
+                        <label class="control-label text-primary">Total Value</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
                             </div>
+                            <input readonly id="total-val" type="text" ng-model="portfolios[selectedIndex].totalVal" class="form-control">
                         </div>
                     </div>
                 </div>
-                <div class="flex-item-options option button-area">
+                <div class="flex-item-options button-area">
                     <button type="button" ng-click="deletePortfolio(selectedIndex)" class="btn btn-outline-danger delete-button">Delete Portfolio</button>
                 </div>
             </div>
         </div>
         <div class="card border-secondary" ng-repeat="alloc in portfolios[selectedIndex].allocGroups" ng-init="aIndex = $index">
-            <div class="card-header text-primary flex-container">
-                <div class="option-group flex-item-title">
-                    <form class="form-inline">
-                        <label class="inline-label">Allocation Group</label>
-                        <input class="form-control alloc-name option" ng-model="alloc.name" placeholder="Group Name">
+            <div id="card-header" class="card-header text-primary flex-container">
+                <div class="flex-item-title">
+                    <form>
+                        <label class="control-label">Allocation Group</label>
+                        <input class="form-control alloc-name" ng-model="alloc.name" placeholder="Group Name">
                     </form>
                 </div>
-                <div class="option-group flex-item-title">
-                    <form class="form-inline">
-                        <label class="inline-label">Allocation</label>
+                <div class="flex-item-title">
+                    <form>
+                        <label class="control-label">Allocation</label>
                         <div id="alloc-input" class="input-group">
                             <input class="form-control alloc-input w-80" type="number" ng-model="alloc.allocation" placeholder="0 %" step="1">
                             <div class="input-group-append w-20">
@@ -97,7 +95,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="flex-item-title option button-area">
+                <div class="flex-item-title">
                     <button type="button" ng-click="deleteAllocGroup($index)" id="delete-alloc-group" class="btn btn-outline-danger delete-button">Remove</button>
                 </div>
             </div>
@@ -105,26 +103,30 @@
                 <div id="fund-card" class="card bg-light" ng-repeat="fund in alloc.funds">
                     <div class="flex-container">
                         <div class="flex-item">
-                            <label class="inline-label">Ticker</label>
-                            <div id="ticker-input" class="input-group option">
+                            <label class="control-label">Ticker</label>
+                            <div id="ticker-input" class="input-group">
                                 <input type="text" ng-model="fund.ticker" ng-change="refreshPrice(fund)" ng-model-options="{debounce: 2000}" class="form-control">
                             </div>
                         </div>
                         <div class="flex-item">
-                            <label class="inline-label">Price</label>
-                            <div id="price-input" class="input-group option">
+                            <label class="control-label">Price 
+                                <span ng-click="refreshPrice(fund)">
+                                    <i id="refresh-fund" class="fas fa-sync-alt"></i>
+                                </span>  
+                            </label>
+                            <div id="price-input" class="input-group">
                                 <input id="current-price" ng-model="fund.price" step="0.01" min="0" class="form-control" placeholder="...">
                             </div>
                         </div>
                         <div class="flex-item">
-                            <label class="inline-label">Shares</label>
-                            <div id="shares-input" class="input-group option">
+                            <label class="control-label">Shares</label>
+                            <div id="shares-input" class="input-group">
                                 <input id="current-shares" ng-model="fund.shares" step="1" min="0" class="form-control" placeholder="0">
                             </div>
                         </div>
                         <div class="flex-item">
-                            <label class="inline-label">Allocation</label>
-                            <div id="alloc-input" class="input-group option">
+                            <label class="control-label">Allocation</label>
+                            <div id="alloc-input" class="input-group">
                                 <input ng-model="fund.alloc" step="1" min="0" class="form-control alloc-input" placeholder="0">
                                 <div class="input-group-append">
                                     <span class="input-group-text">%</span>
@@ -140,7 +142,7 @@
                     </div>
                 </div>
                 <div id="options" class="flex-container">
-                    <div id="button-area" class="option">
+                    <div id="button-area">
                         <button type="button" ng-click="addFund(selectedIndex, $index, '', '')" id="add-fund-button" class="btn btn-outline-primary">Add Fund</button>
                     </div>
                 </div>
@@ -149,12 +151,12 @@
         <div id="options-bottom" class="card-body options">
             <div class="flex-container">
                 <div class="option-group">
-                    <div id="add-alloc" class="option">
+                    <div id="add-alloc">
                         <button type="button" ng-click="addAllocGroup()" class="btn btn-outline-primary">Add Allocation Group</button>
                     </div>
                 </div>
                 <div class="option-group">
-                    <div id="refresh-prices" class="option">
+                    <div id="refresh-prices">
                         <button type="button" ng-click="refreshPrices()" id="refresh-button" class="btn btn-outline-primary stand-btn">Refresh Prices
                             <i id="refresh-sym" class="fas fa-sync-alt"></i>
                         </button>
@@ -163,10 +165,12 @@
             </div>
         </div>
     </div>
+    <div id="stock-warning">Unable to fetch some prices, please check stock ticker, refresh price, or enter manually.</div>
 </body>
 <!-- scripts -->
 <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
 <script src="js/rebalancer.js"></script>
+
 </html>

@@ -38,8 +38,8 @@
     max-width: 150px;
 }
 
-#cash {
-    max-width: 120px;
+#cash, #total-val {
+    max-width: 125px;
     margin-left: 0;
 }
 
@@ -55,6 +55,7 @@
     width:95%;
     margin:auto;
     max-width: 50rem;
+    padding-bottom: 1.75rem;
 }
 
 .card {
@@ -71,18 +72,20 @@
 }
 
 .control-label {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    margin: 0.5rem 0 0.25rem;
 }
 
 .button-area {
     align-items: center;
-    vertical-align: bottom;
+    margin-top: auto;
 }
 
 .delete-button {
-    margin-top: 25px;
+    margin-top: 1rem;;
     padding: 0.25rem 0.5rem;
     font-size: 1rem;
+    vertical-align: bottom !important;
 }
 
 .card {
@@ -94,16 +97,14 @@ h4 {
     display: inline-block;
 }
 
+#card-header {
+    padding-bottom: 0px;
+}
+
 .flex-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-}
-
-.option {
-    width: 160px;
-    margin-right: 15px;
-    display: table-cell;
 }
 
 .option-group {
@@ -114,13 +115,7 @@ h4 {
 }
 
 #name {
-    max-width: 150px;
-}
-
-#stock-warning {
-    margin-bottom: 0;
-    padding-left: 0.75rem;
-    display: none;
+    max-width: 175px;
 }
 
 .table {
@@ -139,9 +134,10 @@ h4 {
 
 #remove-button, #refresh-fund {
     display: inline;
-    margin: 0;
+    margin: 0 0.5rem;
     padding: 0;
     font-size: 1.25rem;
+    cursor: pointer;
 }
 
 .remove-cell {
@@ -190,8 +186,7 @@ nav {
 }
 
 #delete-alloc-group {
-    margin-left: 0.75rem;
-    margin-top: 20px;
+    margin: auto;
 }
 
 #alloc-card {
@@ -217,15 +212,29 @@ nav {
 }
 
 .flex-item-title {
-    flex: 1 0 140px;
-    margin-right: 0.75rem;
+    flex: 1 0 125px;
+    margin: auto 0.75rem 0 auto;
+    padding-bottom: 0.75rem;
 }
 
 .flex-item-options {
-    flex: 1 0 125px;
+    flex: 1 0 120px;
     margin-right: 0.75rem;
 }
 
 #options-top, #options-bottom {
     padding: 0.75rem;
+}
+
+#stock-warning {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    background: #593196;
+    color: white;
+    width: 100%;
+    min-height: 2rem;
+    font-size: 1rem;
+    text-align: center;
+    padding-top: 0.25rem;
 }

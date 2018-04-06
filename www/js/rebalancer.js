@@ -24,9 +24,12 @@ var app = angular.module('myApp', []);
         }
         //show warning if fund price isn't fetched
         function showStockWarning() {
+            let portfolio = $scope.portfolios[$scope.selectedIndex];
             var count = 0;
-            for(var fund in $scope.funds) {
-                if ($scope.funds[fund].price == "Not Available") count++;
+            for(var alloc in portfolio.allocGroups) {
+                for (var fund in portfolio.allocGroups[alloc].funds) {
+                    if (portfolio.allocGroups[alloc].funds[fund].price == "Not Available") count++;
+                }  
             }
             if (count == 0) document.getElementById("stock-warning").style.display="none";
             else document.getElementById("stock-warning").style.display="block";
@@ -40,15 +43,15 @@ var app = angular.module('myApp', []);
         }
         //refresh prices for all funds
         $scope.refreshPrices = function() {
-            for (var fund in $scope.funds) {
-                $scope.funds[fund].price = "fetching...";
-                getPrice($scope.funds[fund]);
+            let portfolio = $scope.portfolios[$scope.selectedIndex];
+            for(var alloc in portfolio.allocGroups) {
+                for (var fund in portfolio.allocGroups[alloc].funds) {
+                    $scope.refreshPrice(portfolio.allocGroups[alloc].funds[fund]);
+                }  
             }
         }
 
-        $scope.target = "Target Allocation (%)";
-
-        // object to store portfolios
+        // object to store portfolios, default portfolio added, default funds added later
         $scope.portfolios = [
             {
                 name: "Portfolio 1",
@@ -59,17 +62,17 @@ var app = angular.module('myApp', []);
                 allocGroups: [
                     {
                     name: "Canada Stocks",
-                    allocation: 0,
+                    allocation: 20,
                     funds: []
                     },
                     {
                     name: "World Stocks",
-                    allocation: 0,
+                    allocation: 40,
                     funds: []
                     },
                     {
                     name: "Bonds",
-                    allocation: 0,
+                    allocation: 40,
                     funds: []
                     }
                 ]
@@ -145,9 +148,9 @@ var app = angular.module('myApp', []);
             return total;
         }
         //add default funds and get prices on page load
-        $scope.addFund(0, 0, 'ZAG', 40);
-        $scope.addFund(0, 0, 'VCN', 20);
-        $scope.addFund(0, 0, 'XAW', 40);
+        $scope.addFund(0, 2, 'ZAG', 100);
+        $scope.addFund(0, 0, 'VCN', 100);
+        $scope.addFund(0, 1, 'XAW', 100);
         $scope.refreshPrices();
 
         //auto calc allocations on user inputs (works for 3 funds only)
