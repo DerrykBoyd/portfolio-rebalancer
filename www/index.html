@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- stylesheets -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/pulse/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link id="theme" rel="stylesheet" type="text/css" href="css/theme-spacelab.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl"
         crossorigin="anonymous"></script>
 </head>
@@ -51,12 +51,23 @@
                 </div>
                 <div class="flex-item-options">
                     <div class="form-inline">
+                        <label class="control-label text-primary">Market Value</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                            </div>
+                            <input readonly id="market-val" type="text" ng-model="portfolios[selectedIndex].marketVal" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-item-options">
+                    <div class="form-inline">
                         <label class="control-label text-primary">Cash Available</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">$</span>
                             </div>
-                            <input id="cash" type="number" placeholder="0" ng-model="portfolios[selectedIndex].cash" step="0.01" min="0" class="form-control">
+                            <input id="cash" type="number" placeholder="0" ng-change="totalValue()" ng-model="portfolios[selectedIndex].cash" step="0.01" min="0" class="form-control toggle-input">
                         </div>
                     </div>
                 </div>
@@ -84,11 +95,20 @@
                         <input class="form-control alloc-name" ng-model="alloc.name" placeholder="Group Name">
                     </form>
                 </div>
-                <div class="flex-item-title">
-                    <form>
+                <div class="flex-item-title alloc-box">
                         <label class="control-label">Allocation</label>
+                        <div id="alloc-current" class="input-group">
+                            <input readonly ng-model="alloc.currAlloc" step="0.1" min="0" class="form-control fund-alloc alloc-input" placeholder="0">
+                            <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+                    </div>
+                <div class="flex-item-title alloc-box">
+                    <form>
+                        <label class="control-label">Target</label>
                         <div id="alloc-input" class="input-group">
-                            <input class="form-control alloc-input w-80" type="number" ng-model="alloc.allocation" placeholder="0 %" step="1">
+                            <input class="form-control group-alloc alloc-input w-80" type="number" ng-change="checkGroupAlloc()" ng-model="alloc.allocation" placeholder="0" step="1" min="0">
                             <div class="input-group-append w-20">
                                 <span class="input-group-text">%</span>
                             </div>
@@ -96,15 +116,13 @@
                     </form>
                 </div>
                 <div class="flex-item-title">
-                    <button type="button" ng-click="deleteAllocGroup($index)" id="delete-alloc-group" class="btn btn-outline-danger delete-button">Remove</button>
+                    <button type="button" ng-click="deleteAllocGroup($index)" id="delete-alloc-group" class="btn btn-outline-danger delete-button">Remove Group</button>
                 </div>
             </div>
             <div id="alloc-card" class="card-body">
                 <div id="fund-card" class="card bg-light" ng-repeat="fund in alloc.funds">
                     <div id="delete-fund" ng-click="removeFund(selectedIndex, aIndex, $index)">
-                        <h5>
-                            <i class="far fa-trash-alt text-danger"></i>
-                        </h5>
+                        <i class="far fa-trash-alt text-danger"></i>
                     </div>
                     <div class="flex-container">
                         <div class="flex-item">
@@ -120,22 +138,37 @@
                                 </span>
                             </label>
                             <div id="price-input" class="input-group">
-                                <input id="current-price" ng-model="fund.price" step="0.01" min="0" class="form-control" placeholder="...">
+                                <input id="current-price" ng-change="totalValue()" ng-model="fund.price" step="0.01" min="0" class="form-control toggle-input" placeholder="...">
                             </div>
                         </div>
                         <div class="flex-item">
                             <label class="control-label">Shares</label>
                             <div id="shares-input" class="input-group">
-                                <input id="current-shares" ng-model="fund.shares" step="1" min="0" class="form-control" placeholder="0">
+                                <input type="number" id="current-shares" ng-change="totalValue()" ng-model="fund.shares" step="1" min="0" class="form-control toggle-input" placeholder="0">
                             </div>
                         </div>
-                        <div class="flex-item">
+                        <div class="flex-item alloc-box">
                             <label class="control-label">Allocation</label>
-                            <div id="alloc-input" class="input-group">
-                                <input ng-model="fund.alloc" step="1" min="0" class="form-control alloc-input" placeholder="0">
+                            <div id="alloc-current" class="input-group">
+                                <input readonly ng-model="fund.currAlloc" step="0.1" min="0" class="form-control fund-alloc alloc-input" placeholder="0">
                                 <div class="input-group-append">
                                     <span class="input-group-text">%</span>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="flex-item alloc-box">
+                            <label class="control-label">Target</label>
+                            <div id="alloc-input" class="input-group">
+                                <input type="number" ng-model="fund.alloc" ng-change="checkFundAlloc()" step="1" min="0" class="form-control fund-alloc alloc-input" placeholder="0">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-item">
+                            <label class="control-label">Action</label>
+                            <div id="shares-input" class="input-group">
+                                <input readonly id="fund-action" ng-model="fund.action" class="form-control" placeholder="Buy/Sell">
                             </div>
                         </div>
                     </div>
@@ -164,7 +197,10 @@
             </div>
         </div>
     </div>
-    <div id="stock-warning">Unable to fetch some prices, please check stock ticker, refresh price, or enter manually.</div>
+    <div class="bg-primary text-white" id="group-warning">Group Allocations should total 100%</div>
+    <div class="bg-primary text-white" id="fund-warning">Fund Allocations should total 100% for each group</div>
+    <div class="bg-primary text-white" id="stock-warning">Unable to fetch some prices, please check stock ticker, refresh price, or enter manually.</div>     
+    <div id="fouc-cover"></div>   
 </body>
 <!-- scripts -->
 <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>

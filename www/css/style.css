@@ -54,7 +54,7 @@
 #content {
     width:95%;
     margin:auto;
-    max-width: 50rem;
+    max-width: 60rem;
     padding-bottom: 1.75rem;
 }
 
@@ -181,6 +181,10 @@ nav {
     padding-left: 0.25rem;
 }
 
+.alloc-box {
+    max-width: 8rem;
+}
+
 .alloc-input {
     margin-right: 0;
 }
@@ -194,7 +198,7 @@ nav {
 }
 
 #fund-card {
-    padding: 0.75rem;
+    padding: 0.25rem 1.25rem 1.25rem;
     margin-top: 0;
 }
 
@@ -202,7 +206,16 @@ nav {
     width: 100%;
 }
 
+#fund-card .flex-item{
+    max-width: 150px;
+}
+
+.input-group-append {
+    margin-right: 0.5rem;
+}
+
 #delete-fund {
+    font-size: 1.1rem;
     position: absolute;
     top: 0;
     right: 0;
@@ -231,16 +244,34 @@ nav {
     padding: 0.75rem;
 }
 
-#stock-warning {
+#stock-warning, #group-warning, #fund-warning {
     display: none;
     position: fixed;
     bottom: 0;
-    background: #593196;
-    color: white;
     width: 100%;
     min-height: 2rem;
-    font-size: 1rem;
+    font-size: 1.25rem;
+    font-weight: bold;
     text-align: center;
-    padding-top: 0.25rem;
+    padding: 0.25rem;
+}
+
+#fouc-cover {
+    height: 100%;
+    width: 100%;
+    background: white;
+    display: block;
     z-index: 999;
+}
+
+#stock-warning {
+    z-index: 998;
+}
+
+#group-warning {
+    z-index: 997;
+}
+
+#fund-warning {
+    z-index: 996;
 }
