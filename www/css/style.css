@@ -1,9 +1,9 @@
-#main-title>img, #main-title>h2 {
+#main-title>img, #main-title>h3 {
     display: inline-block;
 }
 
-#main-title>h2 {
-    margin-top: 10px;
+#main-title>h3 {
+    margin-top: 1rem;
 }
 
 #main-title>img {
@@ -12,12 +12,20 @@
     margin-right: 8px;
 }
 
-.nav-tabs {
-    font-size: 1.25rem;
+#nav-content {
+    width: 100%;
+    max-width: 60rem;
+    padding: 0.75rem;
+    margin:auto;
 }
 
-#title-tab {
-    font-weight: bold;
+#nav-links {
+    float: right;
+    padding-top: 0.75rem;
+}
+
+.nav-tabs {
+    font-size: 1.25rem;
 }
 
 #title-tab:hover {

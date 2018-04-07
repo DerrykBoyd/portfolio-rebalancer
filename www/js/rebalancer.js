@@ -1,42 +1,33 @@
 var app = angular.module('myApp', []);
 
 app.controller('myCtrl', function ($scope, $http) {
-    // object to store portfolios, default portfolio added, default funds added later
-    $scope.portfolios = [
-        {
-            name: "Portfolio 1",
-            theme: "cosmo",
-            cash: 0,
-            marketVal: 0,
-            totalVal: 0,
-            cashRem: "",
-            rebalanceType: "Buy Only",
-            allocGroups: [
-                {
-                    name: "Canada Stocks",
-                    allocation: 20,
-                    currAlloc: '',
-                    funds: []
-                },
-                {
-                    name: "World Stocks",
-                    allocation: 40,
-                    currAlloc: '',
-                    funds: []
-                },
-                {
-                    name: "Bonds",
-                    allocation: 40,
-                    currAlloc: '',
-                    funds: []
-                }
-            ]
-        }
-    ]
 
+    //function to create a new fund
+    $scope.addFund = function (pIndex, aIndex, ticker, alloc) {
+        $scope.portfolios[pIndex].allocGroups[aIndex].funds.push({
+            ticker: ticker,
+            price: "",
+            shares: "",
+            alloc: alloc,
+            currAlloc: '',
+            targetVal: 0,
+            targetShares: 0,
+            toTarget: 0,
+            toPurchase: 0,
+            toShares: 0,
+            newAlloc: ""
+        })
+        populateStorage();
+    }
 
-    //define constants
-    const PORTFOLIOS = $scope.portfolios;
+    // local storate implementation to load previous portfolios
+    if (!localStorage.getItem('portfolios')){
+        setSamplePortfolio();
+        populateStorage();
+    } else {
+        getPortfolios();
+        setTheme();
+    }
 
     // code for highlighting selected portfolio
     $scope.selectedIndex = 0;
@@ -44,15 +35,68 @@ app.controller('myCtrl', function ($scope, $http) {
     $scope.select = function (i) {
         $scope.selectedIndex = i;
     };
-    //set theme (on main title click for testing)
-    document.getElementById('main-title').addEventListener('click', function() {
+
+    // function to populate storage with JSON String
+    function populateStorage() {
+        let portfolios = JSON.stringify($scope.portfolios);
+        localStorage.setItem('portfolios', portfolios);
+    }
+    // function to get JSON portfolios from local storage
+    function getPortfolios() {
+        let portfolios = localStorage.getItem('portfolios');
+        $scope.portfolios = JSON.parse(portfolios);
+    }
+    // set theme
+    function setTheme() {
         document.body.style.display = 'none';
-        document.getElementById('theme').setAttribute('href', `css/theme-${PORTFOLIOS[$scope.selectedIndex].theme}.css`);
+        document.getElementById('theme').setAttribute('href', `css/theme-${$scope.portfolios[0].theme}.css`);
         window.setTimeout (function() {
             document.body.style.display = 'block';
         }, 200)
-    })
-
+    }
+    // function to set expample portfolio if first time user
+    function setSamplePortfolio() {
+        $scope.portfolios = [
+            {
+                name: "Portfolio 1",
+                theme: "spacelab",
+                cash: 0,
+                marketVal: 0,
+                totalVal: 0,
+                cashRem: "",
+                rebalanceType: "Buy Only",
+                allocGroups: [
+                    {
+                        name: "Canada Stocks",
+                        allocation: 20,
+                        currAlloc: '',
+                        funds: []
+                    },
+                    {
+                        name: "World Stocks",
+                        allocation: 40,
+                        currAlloc: '',
+                        funds: []
+                    },
+                    {
+                        name: "Bonds",
+                        allocation: 40,
+                        currAlloc: '',
+                        funds: []
+                    }
+                ]
+            }
+        ];
+        $scope.addFund(0, 2, 'ZAG', 100);
+        $scope.addFund(0, 0, 'VCN', 100);
+        $scope.addFund(0, 1, 'XAW', 100);
+    }
+    //set theme from dropdown menu
+    $scope.changeTheme = function(theme) {
+        $scope.portfolios[$scope.selectedIndex].theme = theme;
+        populateStorage();
+        setTheme();
+    }
     // function to get the fund price if available through AlphaVantage
     function getPrice(fund) {
         $http({
@@ -78,9 +122,9 @@ app.controller('myCtrl', function ($scope, $http) {
     //show warning if fund price isn't fetched
     function showStockWarning() {
         let count = 0;
-        for (let alloc in PORTFOLIOS[$scope.selectedIndex].allocGroups) {
-            for (let fund in PORTFOLIOS[$scope.selectedIndex].allocGroups[alloc].funds) {
-                if (PORTFOLIOS[$scope.selectedIndex].allocGroups[alloc].funds[fund].price == "Not Available") count++;
+        for (let alloc in $scope.portfolios[$scope.selectedIndex].allocGroups) {
+            for (let fund in $scope.portfolios[$scope.selectedIndex].allocGroups[alloc].funds) {
+                if ($scope.portfolios[$scope.selectedIndex].allocGroups[alloc].funds[fund].price == "Not Available") count++;
             }
         }
         if (count == 0) document.getElementById("stock-warning").style.display = "none";
@@ -115,7 +159,7 @@ app.controller('myCtrl', function ($scope, $http) {
     }
     //check total allocations total 100% and show warning if not
     $scope.checkGroupAlloc = function () {
-        let portfolio = PORTFOLIOS[$scope.selectedIndex];
+        let portfolio = $scope.portfolios[$scope.selectedIndex];
         let allocTotal = 0;
         let warning = document.getElementById('group-warning');
         let inputs = document.getElementsByClassName('group-alloc');
@@ -129,11 +173,12 @@ app.controller('myCtrl', function ($scope, $http) {
         else {
             warning.style.display = "block";
             for (let input of inputs) input.classList.add('is-invalid'); 
-        } 
+        }
+        populateStorage();
     }
     //check each fund allocations total 100% and show warning if not
     $scope.checkFundAlloc = function () {
-        let portfolio = PORTFOLIOS[$scope.selectedIndex];
+        let portfolio = $scope.portfolios[$scope.selectedIndex];
         let warning = document.getElementById('fund-warning');
         let inputs = document.getElementsByClassName('fund-alloc');
         let count = 0;
@@ -149,7 +194,8 @@ app.controller('myCtrl', function ($scope, $http) {
         else {
             warning.style.display = "block";
             for (let input of inputs) input.classList.add('is-invalid'); 
-        } 
+        }
+        populateStorage();
     }
     // function to add an allocation group
     $scope.addAllocGroup = function () {
@@ -160,10 +206,12 @@ app.controller('myCtrl', function ($scope, $http) {
                 funds: []
             }
         )
+        populateStorage();
     }
     // function to delete an allocation group
     $scope.deleteAllocGroup = function (index) {
         $scope.portfolios[$scope.selectedIndex].allocGroups.splice(index, 1);
+        populateStorage();
     }
 
     // function to add a new portfolio
@@ -181,55 +229,42 @@ app.controller('myCtrl', function ($scope, $http) {
             }
         )
         $scope.selectedIndex = portfolios.length - 1;
+        populateStorage();
     }
     // function to delete a portfolio
     $scope.deletePortfolio = function (index) {
         $scope.portfolios.splice(index, 1);
         if (index > 0) $scope.selectedIndex -= 1;
+        populateStorage();
     }
-    //function to create a new fund
-    $scope.addFund = function (pIndex, aIndex, ticker, alloc) {
-        $scope.portfolios[pIndex].allocGroups[aIndex].funds.push({
-            ticker: ticker,
-            price: "",
-            shares: "",
-            alloc: alloc,
-            currAlloc: '',
-            targetVal: 0,
-            targetShares: 0,
-            toTarget: 0,
-            toPurchase: 0,
-            toShares: 0,
-            newAlloc: ""
-        })
-    }
+
     //function to remove a fund
     $scope.removeFund = function (pIndex, aIndex, fIndex) {
         $scope.portfolios[pIndex].allocGroups[aIndex].funds.splice(fIndex, 1);
         $scope.totalValue();
+        populateStorage();
     }
     //total holdings before rebalance, returns sum of all stock values
     $scope.holdings = function () {
-        let portfolio = PORTFOLIOS[$scope.selectedIndex];
+        let portfolio = $scope.portfolios[$scope.selectedIndex];
         let total = 0;
         for (let alloc of portfolio.allocGroups) {
             for (let fund of alloc.funds) total += fund.price * fund.shares;
         }
         portfolio.marketVal = total.toFixed(2);
+        populateStorage();
     }
     //total portfolio value, returns sum of all stock values + cash available
     $scope.totalValue = function() {
         $scope.holdings();
-        let portfolio = PORTFOLIOS[$scope.selectedIndex];
+        let portfolio = $scope.portfolios[$scope.selectedIndex];
         let total = parseFloat(portfolio.marketVal) + parseFloat(portfolio.cash);
         portfolio.totalVal = total.toFixed(2);
         $scope.currAlloc();
+        populateStorage();
     }
     //add default funds and get prices on page load
     window.onload = function() {
-        $scope.addFund(0, 2, 'ZAG', 100);
-        $scope.addFund(0, 0, 'VCN', 100);
-        $scope.addFund(0, 1, 'XAW', 100);
         $scope.refreshPrices();
     }
 
@@ -244,7 +279,7 @@ app.controller('myCtrl', function ($scope, $http) {
 
     //calculate current allocation
     $scope.currAlloc = function() {
-        let portfolio = PORTFOLIOS[$scope.selectedIndex];
+        let portfolio = $scope.portfolios[$scope.selectedIndex];
         for (let alloc of portfolio.allocGroups){
             for (let fund of alloc.funds) {
                 let currAlloc = fund.price * fund.shares / marketVal(alloc) * 100;
@@ -255,6 +290,7 @@ app.controller('myCtrl', function ($scope, $http) {
             if (isNaN(groupAlloc)) alloc.currAlloc = 0;
             else alloc.currAlloc = groupAlloc.toFixed(2);
         }
+        populateStorage();
     }
 
     //rebalance logic TO REDO!!
