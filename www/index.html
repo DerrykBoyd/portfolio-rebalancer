@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- stylesheets -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link id="theme" rel="stylesheet" type="text/css" href="css/theme-spacelab.css">
+    <link id="theme" rel="stylesheet" type="text/css" href="css/theme-pulse.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl"
         crossorigin="anonymous"></script>
 </head>
@@ -83,7 +83,7 @@
                 <div class="flex-item-options">
                     <div class="form-inline">
                         <label class="control-label text-primary">Name</label>
-                        <input id="name" type="text" ng-model="portfolios[selectedIndex].name" class="form-control">
+                        <input id="name" type="text" ng-change="populateStorage()" ng-model-options="{debounce: 2000}" ng-model="portfolios[selectedIndex].name" class="form-control">
                     </div>
                 </div>
                 <div class="flex-item-options">
@@ -120,7 +120,7 @@
                     </div>
                 </div>
                 <div class="flex-item-options button-area">
-                    <button type="button" ng-click="deletePortfolio(selectedIndex)" class="btn btn-outline-danger delete-button">Delete Portfolio</button>
+                    <button type="button" id="dlt-folio" ng-click="deletePortfolio(selectedIndex)" class="btn btn-outline-danger delete-button dlt-folio">Delete Portfolio</button>
                 </div>
             </div>
         </div>
@@ -145,7 +145,7 @@
                     <form>
                         <label class="control-label">Target</label>
                         <div id="alloc-input" class="input-group">
-                            <input class="form-control group-alloc alloc-input w-80" type="number" ng-change="checkGroupAlloc()" ng-model="alloc.allocation" placeholder="0" step="1" min="0">
+                            <input class="form-control group-alloc alloc-input w-80" type="number" ng-change="checkGroupAlloc()" ng-model="alloc.allocation" placeholder="0" step="1" min="0" max="100">
                             <div class="input-group-append w-20">
                                 <span class="input-group-text">%</span>
                             </div>
@@ -187,16 +187,16 @@
                         <div class="flex-item alloc-box">
                             <label class="control-label">Allocation</label>
                             <div id="alloc-current" class="input-group">
-                                <input readonly ng-model="fund.currAlloc" step="0.1" min="0" class="form-control fund-alloc alloc-input" placeholder="0">
+                                <input readonly ng-model="fund.currAlloc" step="0.1" min="0" max="100" class="form-control fund-alloc alloc-input" placeholder="0">
                                 <div class="input-group-append">
                                     <span class="input-group-text">%</span>
                                 </div>
                             </div>
                         </div>
                         <div class="flex-item alloc-box">
-                            <label class="control-label">Target</label>
+                            <label class="control-label">Sub-Target</label>
                             <div id="alloc-input" class="input-group">
-                                <input type="number" ng-model="fund.alloc" ng-change="checkFundAlloc()" step="1" min="0" class="form-control fund-alloc alloc-input" placeholder="0">
+                                <input type="number" ng-model="fund.alloc" ng-change="checkFundAlloc()" step="1" min="0" max="100" class="form-control fund-alloc alloc-input" placeholder="0">
                                 <div class="input-group-append">
                                     <span class="input-group-text">%</span>
                                 </div>
@@ -236,8 +236,7 @@
     </div>
     <div class="bg-primary text-white" id="group-warning">Group Allocations should total 100%</div>
     <div class="bg-primary text-white" id="fund-warning">Fund Allocations should total 100% for each group</div>
-    <div class="bg-primary text-white" id="stock-warning">Unable to fetch some prices, please check stock ticker, refresh price, or enter manually.</div>     
-    <div id="fouc-cover"></div>   
+    <div class="bg-primary text-white" id="stock-warning">Unable to fetch some prices, please check stock ticker, refresh price, or enter manually.</div>      
 </body>
 <!-- scripts -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

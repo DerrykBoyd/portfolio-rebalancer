@@ -1,3 +1,7 @@
+body {
+    display: none;
+}
+
 #main-title>img, #main-title>h3 {
     display: inline-block;
 }
@@ -262,14 +266,6 @@ nav {
     font-weight: bold;
     text-align: center;
     padding: 0.25rem;
-}
-
-#fouc-cover {
-    height: 100%;
-    width: 100%;
-    background: white;
-    display: block;
-    z-index: 999;
 }
 
 #stock-warning {
