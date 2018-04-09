@@ -1,6 +1,101 @@
-body {
-    display: none;
-}
+.splash {
+    background:white;
+    position: absolute;
+    left: 0;
+    top: 0 ;
+    z-index: 999;
+    -webkit-animation: cssAnimation 3s forwards; 
+    animation: cssAnimation 3s forwards;
+    }
+
+    @keyframes cssAnimation {
+        0%  {opacity: 1;
+            width: 100%;
+            height: 100%}
+        75%  {opacity: 1;
+            width: 100%;
+            height: 100%}
+        100% {opacity: 0;
+            width: 0;
+            height: 0}
+        }
+    @-webkit-keyframes cssAnimation {
+        0%  {opacity: 1;
+            width: 100%;
+            height: 100%}
+        75%  {opacity: 1;
+                width: 100%;
+                height: 100%}
+        100% {opacity: 0;
+                width: 0;
+                height: 0}
+        }
+
+.spinner {
+    margin: 40% auto;
+    width: 100px;
+    height: 80px;
+    text-align: center;
+    font-size: 10px;
+    -webkit-animation: spinnerAnimation 3s forwards; 
+    animation: spinnerAnimation 3s forwards;
+  }
+
+  @keyframes spinnerAnimation {
+    0%  {opacity: 1;}
+    75%  {opacity: 1;}
+    100% {opacity: 0;}
+  }
+  @-webkit-keyframes spinnerAnimation {
+        0%  {opacity: 1;}
+        75%  {opacity: 1;}
+        100% {opacity: 0;}
+  }
+  
+  .spinner > div {
+    background: slategrey;
+    height: 100%;
+    width: 6px;
+    display: inline-block;
+    
+    -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+    animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  }
+  
+  .spinner .rect2 {
+    -webkit-animation-delay: -1.1s;
+    animation-delay: -1.1s;
+  }
+  
+  .spinner .rect3 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+  }
+  
+  .spinner .rect4 {
+    -webkit-animation-delay: -0.9s;
+    animation-delay: -0.9s;
+  }
+  
+  .spinner .rect5 {
+    -webkit-animation-delay: -0.8s;
+    animation-delay: -0.8s;
+  }
+  
+  @-webkit-keyframes sk-stretchdelay {
+    0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+    20% { -webkit-transform: scaleY(1.0) }
+  }
+  
+  @keyframes sk-stretchdelay {
+    0%, 40%, 100% { 
+      transform: scaleY(0.4);
+      -webkit-transform: scaleY(0.4);
+    }  20% { 
+      transform: scaleY(1.0);
+      -webkit-transform: scaleY(1.0);
+    }
+  }
 
 #main-title>img, #main-title>h3 {
     display: inline-block;
@@ -126,7 +221,27 @@ h4 {
     margin-right: 0.5rem;
 }
 
-#name {
+#name-input {
+    max-width: 175px;
+    min-width: 130px;
+    margin-right: 0;
+}
+
+#settings-toggle {
+    min-width: 3rem;
+    margin:auto;
+    text-align: center;
+}
+
+.dropdown-menu {
+    padding: 0.75rem !important;
+}
+
+.input-group {
+    flex-wrap: nowrap !important;
+}
+
+#total-val {
     max-width: 175px;
 }
 
@@ -248,7 +363,7 @@ nav {
 }
 
 .flex-item-options {
-    flex: 1 0 120px;
+    flex: 1 0 130px;
     margin-right: 0.75rem;
 }
 
@@ -262,7 +377,7 @@ nav {
     bottom: 0;
     width: 100%;
     min-height: 2rem;
-    font-size: 1.25rem;
+    font-size: 1rem;
     font-weight: bold;
     text-align: center;
     padding: 0.25rem;

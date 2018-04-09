@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- define our angular app -->
-<html ng-app="myApp" ng-controller="myCtrl">
+<html ng-app="myApp" ng-controller="myCtrl" ng-init="pageLoaded()">
 
 <head>
     <title>Portfolio Rebalancer</title>
@@ -15,10 +15,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- stylesheets -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link id="theme" rel="stylesheet" type="text/css" href="css/theme-pulse.css">
+    <link rel="stylesheet" type="text/css" ng-href="css/theme-{{ theme }}.css">
+    <!-- scripts -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl"
         crossorigin="anonymous"></script>
+    <script>
+
+    </script>
 </head>
+<div class="splash">
+    <div class="spinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+    </div>
+</div>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div id="nav-content">
         <div id="main-title" class="d-inline-block">
@@ -46,27 +59,22 @@
         </div>
     </div>
 </nav>
-
 <body>
     <div id="content">
         <ul class="nav nav-tabs">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Theme</a>
                 <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
-                    <a ng-click="changeTheme('cosmo')" class="dropdown-item" href="#">Cosmo</a>
-                    <a ng-click="changeTheme('flatly')" class="dropdown-item" href="#">Flatly</a>
-                    <a ng-click="changeTheme('journal')" class="dropdown-item" href="#">Journal</a>
-                    <a ng-click="changeTheme('litera')" class="dropdown-item" href="#">Litera</a>
-                    <a ng-click="changeTheme('materia')" class="dropdown-item" href="#">Materia</a>
-                    <a ng-click="changeTheme('minty')" class="dropdown-item" href="#">Minty</a>
-                    <a ng-click="changeTheme('pulse')" class="dropdown-item" href="#">Pulse</a>
-                    <a ng-click="changeTheme('simplex')" class="dropdown-item" href="#">Simplex</a>
-                    <a ng-click="changeTheme('sketchy')" class="dropdown-item" href="#">Sketchy</a>
-                    <a ng-click="changeTheme('slate')" class="dropdown-item" href="#">Slate</a>
-                    <a ng-click="changeTheme('solar')" class="dropdown-item" href="#">Solar</a>
-                    <a ng-click="changeTheme('spacelab')" class="dropdown-item" href="#">SpaceLab</a>
-                    <a ng-click="changeTheme('superhero')" class="dropdown-item" href="#">SuperHero</a>
-                    <a ng-click="changeTheme('united')" class="dropdown-item" href="#">United</a>
+                    <a ng-click="setTheme('cosmo')" class="dropdown-item" href="#">Cosmo</a>
+                    <a ng-click="setTheme('flatly')" class="dropdown-item" href="#">Flatly</a>
+                    <a ng-click="setTheme('journal')" class="dropdown-item" href="#">Journal</a>
+                    <a ng-click="setTheme('litera')" class="dropdown-item" href="#">Litera</a>
+                    <a ng-click="setTheme('materia')" class="dropdown-item" href="#">Materia</a>
+                    <a ng-click="setTheme('minty')" class="dropdown-item" href="#">Minty</a>
+                    <a ng-click="setTheme('pulse')" class="dropdown-item" href="#">Pulse</a>
+                    <a ng-click="setTheme('simplex')" class="dropdown-item" href="#">Simplex</a>
+                    <a ng-click="setTheme('sketchy')" class="dropdown-item" href="#">Sketchy</a>
+                    <a ng-click="setTheme('spacelab')" class="dropdown-item" href="#">SpaceLab</a>
                 </div>
             </li>
             <li class="nav-item" ng-repeat="portfolio in portfolios">
@@ -83,7 +91,30 @@
                 <div class="flex-item-options">
                     <div class="form-inline">
                         <label class="control-label text-primary">Name</label>
-                        <input id="name" type="text" ng-change="populateStorage()" ng-model-options="{debounce: 2000}" ng-model="portfolios[selectedIndex].name" class="form-control">
+                        <div class="input-group">
+                            <input id="name-input" type="text" ng-change="populateStorage()" ng-model-options="{debounce: 2000}" ng-model="portfolios[selectedIndex].name" class="form-control">
+                            <div class="input-group-append dropdown">
+                                <a id="settings-toggle" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></a>
+                                <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                    <div class="dropdown-item custom-control custom-radio">
+                                        <input id="customRadio1" class="custom-control-input" type="radio" ng-value="true" ng-model="portfolios[selectedIndex].buyOnly" ng-change="populateStorage()">
+                                        <label class="custom-control-label" for="customRadio1">Buy Only</label>
+                                    </div>
+                                    <div class="dropdown-divider"></div>
+                                    <div class="dropdown-item custom-control custom-radio">
+                                        <input id="customRadio2" class="custom-control-input" type="radio" ng-value="false" ng-model="portfolios[selectedIndex].buyOnly" ng-change="populateStorage()">
+                                        <label class="custom-control-label" for="customRadio2">Buy & Sell</label>
+                                    </div>
+                                    <!-- sample dropdown items
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Separated link</a>
+                                    -->
+                                </div>
+                            </div>
+                        </div>                        
                     </div>
                 </div>
                 <div class="flex-item-options">
@@ -108,7 +139,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex-item-options">
+                <div id="total-val" class="flex-item-options">
                     <div class="form-inline">
                         <label class="control-label text-primary">Total Value</label>
                         <div class="input-group">
@@ -124,7 +155,7 @@
                 </div>
             </div>
         </div>
-        <div class="card border-secondary" ng-repeat="alloc in portfolios[selectedIndex].allocGroups" ng-init="aIndex = $index">
+        <div class="card border-secondary" ng-repeat="alloc in portfolios[selectedIndex].allocGroups track by $index" ng-init="aIndex = $index">
             <div id="card-header" class="card-header text-primary flex-container">
                 <div class="flex-item-title">
                     <form>
@@ -135,7 +166,7 @@
                 <div class="flex-item-title alloc-box">
                         <label class="control-label">Allocation</label>
                         <div id="alloc-current" class="input-group">
-                            <input readonly ng-model="alloc.currAlloc" step="0.1" min="0" class="form-control fund-alloc alloc-input" placeholder="0">
+                            <input readonly ng-model="alloc.currAlloc" step="0.1" min="0" class="form-control alloc-input" placeholder="0">
                             <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                             </div>
@@ -157,7 +188,7 @@
                 </div>
             </div>
             <div id="alloc-card" class="card-body">
-                <div id="fund-card" class="card bg-light" ng-repeat="fund in alloc.funds">
+                <div id="fund-card" class="card bg-light" ng-repeat="fund in alloc.funds track by $index">
                     <div id="delete-fund" ng-click="removeFund(selectedIndex, aIndex, $index)">
                         <i class="far fa-trash-alt text-danger"></i>
                     </div>
@@ -187,7 +218,7 @@
                         <div class="flex-item alloc-box">
                             <label class="control-label">Allocation</label>
                             <div id="alloc-current" class="input-group">
-                                <input readonly ng-model="fund.currAlloc" step="0.1" min="0" max="100" class="form-control fund-alloc alloc-input" placeholder="0">
+                                <input readonly ng-model="fund.currAlloc" step="0.1" min="0" max="100" class="form-control alloc-input" placeholder="0">
                                 <div class="input-group-append">
                                     <span class="input-group-text">%</span>
                                 </div>
@@ -205,7 +236,7 @@
                         <div class="flex-item">
                             <label class="control-label">Action</label>
                             <div id="shares-input" class="input-group">
-                                <input readonly id="fund-action" ng-model="fund.action" class="form-control" placeholder="Buy/Sell">
+                                <input readonly id="fund-action" ng-model="fund.toBuy" class="form-control" placeholder="Buy/Sell">
                             </div>
                         </div>
                     </div>
