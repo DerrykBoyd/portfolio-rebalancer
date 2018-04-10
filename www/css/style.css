@@ -102,6 +102,7 @@
 }
 
 #main-title>h3 {
+    font-size: 1.3rem;
     margin-top: 1rem;
 }
 
@@ -111,10 +112,15 @@
     margin-right: 8px;
 }
 
+nav {
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
 #nav-content {
     width: 100%;
     max-width: 60rem;
-    padding: 0.75rem;
+    padding: 0.25em 0.75rem;
     margin:auto;
 }
 
@@ -124,7 +130,7 @@
 }
 
 .nav-tabs {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
 }
 
 #title-tab:hover {
@@ -132,21 +138,72 @@
     border-width: 0 0 1px 0;
 }
 
+.flex-item-options {
+    flex: 1 0 110px;
+    margin-right: 0.5rem;
+}
+
+
+#options-top, #options-bottom {
+    padding: 0.25rem 1rem;
+    line-height: 1;
+}
+
+#portfolio-name {
+    flex-wrap: nowrap;
+}
+
+.input-group {
+    margin-top: 0.25rem;
+}
+
+.input-group-text {
+    padding: 0.3rem 0.5rem !important;
+}
+
 .form-control {
     max-width: 160px;
     margin-right: 0.5rem;
+    padding: 0.3rem 0.5rem !important;
+}
+
+.card {
+    margin: 0.75rem auto;
+    border-radius: 10px;
+}
+
+#alloc-card {
+    padding : 0.6rem;
+}
+
+#card-header {
+    padding: 0 1rem;
+}
+
+.flex-item-title {
+    flex: 1 0 125px;
+    margin: auto 0.25rem 0.5rem auto;
 }
 
 .alloc-name {
     max-width: 300px;
 }
 
+#fund-card {
+    padding: 0rem 0.75rem 0.75rem;
+    margin-top: 0;
+}
+
+.add-fund-button {
+    margin-left: 0.3rem;
+}
+
 .custom-select {
     max-width: 150px;
 }
 
-#cash, #total-val {
-    max-width: 125px;
+#cash, #total-val, #market-val {
+    max-width: 160px;
     margin-left: 0;
 }
 
@@ -163,10 +220,6 @@
     margin:auto;
     max-width: 60rem;
     padding-bottom: 1.75rem;
-}
-
-.card {
-    margin: 16px auto;
 }
 
 #main-title {
@@ -195,17 +248,9 @@
     vertical-align: bottom !important;
 }
 
-.card {
-    border-radius: 10px;
-}
-
 h4 {
     text-decoration: underline;
     display: inline-block;
-}
-
-#card-header {
-    padding-bottom: 0px;
 }
 
 .flex-container {
@@ -237,14 +282,6 @@ h4 {
     padding: 0.75rem !important;
 }
 
-.input-group {
-    flex-wrap: nowrap !important;
-}
-
-#total-val {
-    max-width: 175px;
-}
-
 .table {
     margin-bottom: 0.5rem !important;
 }
@@ -274,11 +311,6 @@ h4 {
 
 #refresh-sym, #add-sym {
     margin-left: 0.5rem;
-}
-
-nav {
-    padding: 0.75rem;
-    margin-bottom: 1rem;
 }
 
 #cur-alloc {
@@ -320,15 +352,6 @@ nav {
     margin: auto;
 }
 
-#alloc-card {
-    padding : 0.75rem;
-}
-
-#fund-card {
-    padding: 0.25rem 1.25rem 1.25rem;
-    margin-top: 0;
-}
-
 #ticker-input, #price-input, #shares-input {
     width: 100%;
 }
@@ -354,21 +377,6 @@ nav {
 
 .flex-item {
     flex: 1 0 100px;
-}
-
-.flex-item-title {
-    flex: 1 0 125px;
-    margin: auto 0.75rem 0 auto;
-    padding-bottom: 0.75rem;
-}
-
-.flex-item-options {
-    flex: 1 0 130px;
-    margin-right: 0.75rem;
-}
-
-#options-top, #options-bottom {
-    padding: 0.75rem;
 }
 
 #stock-warning, #group-warning, #fund-warning {
