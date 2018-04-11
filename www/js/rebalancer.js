@@ -109,18 +109,15 @@ app.controller('myCtrl', function ($scope, $http) {
 
     // function to get the fund price if available through AlphaVantage
     function getPrice(fund) {
+        let str = fund.ticker;
+        let ticker = str.toUpperCase();
         $http({
             method: 'GET',
-            url: 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + fund.ticker + '&interval=1min&apikey=04MXYGOU0W2Y8PUH'
+            url: 'https://aos5yqid2a.execute-api.us-east-1.amazonaws.com/prod/getStockPrice?ticker=' + ticker
         }).then(function successCallback(response) {
             //success code here
-            if (Object.keys(response.data)[0] != 'Meta Data') {
-                fund.price = "Not Available";
-            } else {
-                var tempKey = Object.keys(response.data['Time Series (1min)'])[0];
-                //console.log(response.data);
-                fund.price = Number(response.data['Time Series (1min)'][tempKey]['1. open']);
-            }
+            fund.price = response.data;
+            //console.log(response);
             showStockWarning();
             inputOn();
             $scope.totalValue();
@@ -129,6 +126,7 @@ app.controller('myCtrl', function ($scope, $http) {
             console.log('API call error occurred: ' + response);
         });
     }
+
     //show warning if fund price isn't fetched
     function showStockWarning() {
         let count = 0;
