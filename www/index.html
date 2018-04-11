@@ -38,32 +38,36 @@
             <img src="images/navbar-img.png">
             <h3 class="text-white">Portfolio Rebalancer</h3>
         </div>
-        <div id="nav-links" class="d-inline-block">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <!-- <div id="nav-links" class="d-inline-block">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
+                aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
             <div class="collapse navbar-collapse" id="navbarColor01">
                 <ul class="navbar-nav mr-auto">
-                  <li class="nav-item active">
-                    <a class="nav-link" href="#">Portfolios <span class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                  </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Portfolios
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
                 </ul>
             </div>
-        </div>
+        </div> -->
     </div>
 </nav>
+
 <body>
     <div id="content">
         <ul class="nav nav-tabs">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Theme</a>
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                    aria-expanded="false">Theme</a>
                 <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
                     <a ng-click="setTheme('cosmo')" class="dropdown-item" href="#">Cosmo</a>
                     <a ng-click="setTheme('flatly')" class="dropdown-item" href="#">Flatly</a>
@@ -78,7 +82,8 @@
                 </div>
             </li>
             <li class="nav-item" ng-repeat="portfolio in portfolios">
-                <a ng-click="select($index)" ng-class="{active: $index===selectedIndex}" class="nav-link" data-toggle="tab" href="#">{{portfolio.name}}</a>
+                <a ng-click="select($index)" ng-class="{active: $index===selectedIndex}" class="nav-link" data-toggle="tab"
+                    href="#">{{portfolio.name}}</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#" ng-click="addPortfolio()">
@@ -91,30 +96,39 @@
                 <div class="flex-item-options">
                     <div class="form-inline">
                         <label class="control-label text-primary">Name</label>
-                        <div class="input-group">
-                            <input id="name-input" type="text" ng-change="populateStorage()" ng-model-options="{debounce: 2000}" ng-model="portfolios[selectedIndex].name" class="form-control">
+                        <div id="portfolio-name" class="input-group">
+                            <input id="name-input" type="text" ng-change="populateStorage()" ng-model-options="{debounce: 2000}"
+                                ng-model="portfolios[selectedIndex].name" class="form-control">
                             <div class="input-group-append dropdown">
-                                <a id="settings-toggle" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></a>
+                                <a id="settings-toggle" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                                    aria-expanded="false">
+                                    <i class="fas fa-cog"></i>
+                                </a>
                                 <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
                                     <div class="dropdown-item custom-control custom-radio">
-                                        <input id="customRadio1" class="custom-control-input" type="radio" ng-value="true" ng-model="portfolios[selectedIndex].buyOnly" ng-change="populateStorage()">
+                                        <input id="customRadio1" name="buy-sell" class="custom-control-input" type="radio" ng-value="true" ng-model="portfolios[selectedIndex].buyOnly"
+                                            ng-change="totalValue()">
                                         <label class="custom-control-label" for="customRadio1">Buy Only</label>
+                                    </div>
+                                    <div class="dropdown-item custom-control custom-radio">
+                                        <input id="customRadio2" name="buy-sell" class="custom-control-input" type="radio" ng-value="false" ng-model="portfolios[selectedIndex].buyOnly"
+                                            ng-change="totalValue()">
+                                        <label class="custom-control-label" for="customRadio2">Buy & Sell</label>
                                     </div>
                                     <div class="dropdown-divider"></div>
                                     <div class="dropdown-item custom-control custom-radio">
-                                        <input id="customRadio2" class="custom-control-input" type="radio" ng-value="false" ng-model="portfolios[selectedIndex].buyOnly" ng-change="populateStorage()">
-                                        <label class="custom-control-label" for="customRadio2">Buy & Sell</label>
+                                        <input id="customRadio3" name="dollar-shares" class="custom-control-input" type="radio" ng-value="true"
+                                            ng-model="portfolios[selectedIndex].resultShares" ng-change="rebalance()">
+                                        <label class="custom-control-label" for="customRadio3">Results in Shares</label>
                                     </div>
-                                    <!-- sample dropdown items
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Separated link</a>
-                                    -->
+                                    <div class="dropdown-item custom-control custom-radio">
+                                        <input id="customRadio4" name="dollar-shares" class="custom-control-input" type="radio" ng-value="false"
+                                            ng-model="portfolios[selectedIndex].resultShares" ng-change="rebalance()">
+                                        <label class="custom-control-label" for="customRadio4">Results in $</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                 </div>
                 <div class="flex-item-options">
@@ -135,7 +149,8 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">$</span>
                             </div>
-                            <input id="cash" type="number" placeholder="0" ng-change="totalValue()" ng-model="portfolios[selectedIndex].cash" step="0.01" min="0" class="form-control toggle-input">
+                            <input id="cash" type="number" placeholder="0" ng-change="totalValue()" ng-model="portfolios[selectedIndex].cash"
+                                step="0.01" min="0" class="form-control toggle-input">
                         </div>
                     </div>
                 </div>
@@ -150,12 +165,24 @@
                         </div>
                     </div>
                 </div>
+                <div id="total-val" ng-show="portfolios[selectedIndex].resultShares" class="flex-item-options">
+                    <div class="form-inline">
+                        <label class="control-label text-primary">$ Remaining</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                            </div>
+                            <input readonly id="cash-rem" type="text" ng-model="portfolios[selectedIndex].cashRem" class="form-control">
+                        </div>
+                    </div>
+                </div>
                 <div class="flex-item-options button-area">
                     <button type="button" id="dlt-folio" ng-click="deletePortfolio(selectedIndex)" class="btn btn-outline-danger delete-button dlt-folio">Delete Portfolio</button>
                 </div>
             </div>
         </div>
-        <div class="card border-secondary" ng-repeat="alloc in portfolios[selectedIndex].allocGroups track by $index" ng-init="aIndex = $index">
+        <div class="card border-secondary" ng-repeat="alloc in portfolios[selectedIndex].allocGroups track by $index"
+            ng-init="aIndex = $index">
             <div id="card-header" class="card-header text-primary flex-container">
                 <div class="flex-item-title">
                     <form>
@@ -164,19 +191,20 @@
                     </form>
                 </div>
                 <div class="flex-item-title alloc-box">
-                        <label class="control-label">Allocation</label>
-                        <div id="alloc-current" class="input-group">
-                            <input readonly ng-model="alloc.currAlloc" step="0.1" min="0" class="form-control alloc-input" placeholder="0">
-                            <div class="input-group-append">
-                                <span class="input-group-text">%</span>
-                            </div>
+                    <label class="control-label">Allocation</label>
+                    <div id="alloc-current" class="input-group">
+                        <input readonly ng-model="alloc.currAlloc" step="0.1" min="0" class="form-control alloc-input" placeholder="0">
+                        <div class="input-group-append">
+                            <span class="input-group-text">%</span>
                         </div>
                     </div>
+                </div>
                 <div class="flex-item-title alloc-box">
                     <form>
                         <label class="control-label">Target</label>
                         <div id="alloc-input" class="input-group">
-                            <input class="form-control group-alloc alloc-input w-80" type="number" ng-change="checkGroupAlloc()" ng-model="alloc.allocation" placeholder="0" step="1" min="0" max="100">
+                            <input class="form-control group-alloc alloc-input w-80" type="number" ng-change="checkGroupAlloc()"
+                                ng-model="alloc.allocation" placeholder="0" step="1" min="0" max="100">
                             <div class="input-group-append w-20">
                                 <span class="input-group-text">%</span>
                             </div>
@@ -196,7 +224,8 @@
                         <div class="flex-item">
                             <label class="control-label">Ticker</label>
                             <div id="ticker-input" class="input-group">
-                                <input type="text" ng-model="fund.ticker" ng-change="refreshPrice(fund)" ng-model-options="{debounce: 2000}" class="form-control">
+                                <input type="text" ng-model="fund.ticker" ng-change="refreshPrice(fund)" ng-model-options="{debounce: 2000}"
+                                    class="form-control">
                             </div>
                         </div>
                         <div class="flex-item">
@@ -206,19 +235,22 @@
                                 </span>
                             </label>
                             <div id="price-input" class="input-group">
-                                <input id="current-price" ng-change="totalValue()" ng-model="fund.price" step="0.01" min="0" class="form-control toggle-input" placeholder="...">
+                                <input id="current-price" ng-change="totalValue()" ng-model="fund.price" step="0.01" min="0" class="form-control toggle-input"
+                                    placeholder="...">
                             </div>
                         </div>
                         <div class="flex-item">
                             <label class="control-label">Shares</label>
                             <div id="shares-input" class="input-group">
-                                <input type="number" id="current-shares" ng-change="totalValue()" ng-model="fund.shares" step="1" min="0" class="form-control toggle-input" placeholder="0">
+                                <input type="number" id="current-shares" ng-change="totalValue()" ng-model="fund.shares" step="1" min="0"
+                                    class="form-control toggle-input" placeholder="0">
                             </div>
                         </div>
                         <div class="flex-item alloc-box">
                             <label class="control-label">Allocation</label>
                             <div id="alloc-current" class="input-group">
-                                <input readonly ng-model="fund.currAlloc" step="0.1" min="0" max="100" class="form-control alloc-input" placeholder="0">
+                                <input readonly ng-model="fund.currAlloc" step="0.1" min="0" max="100" class="form-control alloc-input"
+                                    placeholder="0">
                                 <div class="input-group-append">
                                     <span class="input-group-text">%</span>
                                 </div>
@@ -227,7 +259,8 @@
                         <div class="flex-item alloc-box">
                             <label class="control-label">Sub-Target</label>
                             <div id="alloc-input" class="input-group">
-                                <input type="number" ng-model="fund.alloc" ng-change="checkFundAlloc()" step="1" min="0" max="100" class="form-control fund-alloc alloc-input" placeholder="0">
+                                <input type="number" ng-model="fund.alloc" ng-change="checkFundAlloc()" step="1" min="0" max="100" class="form-control fund-alloc alloc-input"
+                                    placeholder="0">
                                 <div class="input-group-append">
                                     <span class="input-group-text">%</span>
                                 </div>
@@ -236,14 +269,16 @@
                         <div class="flex-item">
                             <label class="control-label">Action</label>
                             <div id="shares-input" class="input-group">
-                                <input readonly id="fund-action" ng-model="fund.toBuy" class="form-control" placeholder="Buy/Sell">
+                                <input readonly id="{{fund.ticker}}" ng-model="fund.toBuy" class="form-control" placeholder="Buy/Sell">
+                                <div class="valid-feedback">Buy {{action}}</div>
+                                <div class="invalid-feedback">Sell {{action}}</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div id="options" class="flex-container">
                     <div id="button-area">
-                        <button type="button" ng-click="addFund(selectedIndex, $index, '', '')" id="add-fund-button" class="btn btn-outline-primary">Add Fund</button>
+                        <button type="button" ng-click="addFund(selectedIndex, $index, '', '')" class="btn btn-outline-primary add-fund-button">Add Fund</button>
                     </div>
                 </div>
             </div>
@@ -267,11 +302,16 @@
     </div>
     <div class="bg-primary text-white" id="group-warning">Group Allocations should total 100%</div>
     <div class="bg-primary text-white" id="fund-warning">Fund Allocations should total 100% for each group</div>
-    <div class="bg-primary text-white" id="stock-warning">Unable to fetch some prices, please check stock ticker, refresh price, or enter manually.</div>      
+    <div class="bg-primary text-white" id="stock-warning">Unable to fetch some prices. Please check stock ticker, refresh price, or enter manually.</div>
 </body>
 <!-- scripts -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
 <script src="js/rebalancer.js"></script>
+
 </html>

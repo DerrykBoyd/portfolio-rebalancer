@@ -16,7 +16,7 @@ module.exports = {
     "ui": {
         "port": 3001
     },
-    "files": ["www/css/*.css", "www/js/*.js", "www/index.html"],
+    "files": ["www/css/*.css"],
     "watchEvents": [
         "change"
     ],
@@ -26,7 +26,7 @@ module.exports = {
     "watchOptions": {
         "ignoreInitial": true
     },
-    "server": ['www'],
+    "server": "www",
     "proxy": false,
     "port": 3000,
     "middleware": false,

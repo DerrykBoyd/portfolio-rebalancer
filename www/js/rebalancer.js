@@ -46,6 +46,7 @@ app.controller('myCtrl', function ($scope, $http) {
         $scope.refreshPrices();
         $scope.checkFundAlloc();
         $scope.checkGroupAlloc();
+        $scope.rebalance();
         if ($scope.portfolios.length == 1) {
             document.getElementById('dlt-folio').style.display = 'none';
         }
@@ -78,8 +79,9 @@ app.controller('myCtrl', function ($scope, $http) {
                 cash: 0,
                 marketVal: 0,
                 totalVal: 0,
-                cashRem: "",
+                cashRem: 0,
                 buyOnly: true,
+                resultShares: true,
                 allocGroups: [
                     {
                         name: "Canada Stocks",
@@ -226,6 +228,32 @@ app.controller('myCtrl', function ($scope, $http) {
         $scope.populateStorage();
     }
 
+    // fund to check buy or sell and update forms
+    $scope.checkAction = function() {
+        let portfolio = $scope.portfolios[$scope.selectedIndex]
+        // set input messages
+        if (portfolio.resultShares) $scope.action = '(# of shares)'
+        else $scope.action = '($)'
+        // set a timeout to let the funds update
+        setTimeout( function() {
+            let allocGroups = portfolio.allocGroups;
+            for (let alloc of allocGroups) {
+                for (let fund of alloc.funds) {
+                    let input = document.getElementById( `${fund.ticker}`);
+                    if (fund.toBuy>0) {
+                        input.classList.add('is-valid');
+                    } else if (fund.toBuy<0){
+                        input.classList.remove('is-valid');
+                        input.classList.add('is-invalid');
+                    } else {
+                        input.classList.remove('is-valid');
+                        input.classList.remove('is-invalid');
+                    }
+            }
+        }
+        }, 200)
+    }
+
     // function to add a new portfolio
     $scope.addPortfolio = function () {
         var portfolios = $scope.portfolios;
@@ -234,8 +262,9 @@ app.controller('myCtrl', function ($scope, $http) {
             {
                 name: "Portfolio " + num,
                 cash: 0,
-                cashRem: "",
+                cashRem: 0,
                 buyOnly: true,
+                resultShares: true,
                 totalVal: 0,
                 allocGroups: []
             }
@@ -309,9 +338,9 @@ app.controller('myCtrl', function ($scope, $http) {
         let portfolio = $scope.portfolios[$scope.selectedIndex];
         if (portfolio.buyOnly) {
             portfolio.toTarget = 0;
+            var sortedFunds = [];
             // set target values for each allocation group and fund
             for (let alloc of portfolio.allocGroups) {
-                let sortedFunds = [];
                 alloc.toTarget = 0;
                 alloc.marketVal = 0;
                 if (alloc.allocation == 0) alloc.targetVal = 0;
@@ -320,7 +349,7 @@ app.controller('myCtrl', function ($scope, $http) {
                     alloc.marketVal += fund.price*fund.shares;
                 }
                 for (let fund of alloc.funds) {
-                    sortedFunds.push(fund);
+                    if(fund.alloc > 0) sortedFunds.push(fund);
                     if (fund.alloc == 0) fund.targetVal = 0;
                     else fund.targetVal = alloc.targetVal * fund.alloc/100;
                     fund.toTarget = fund.targetVal - alloc.marketVal * fund.alloc/100;
@@ -331,107 +360,74 @@ app.controller('myCtrl', function ($scope, $http) {
                 sortedFunds.sort(function(a, b){
                     return b.price - a.price;
                 })
-                console.log(sortedFunds);
+                // console.log(sortedFunds);
             }
             for (let alloc of portfolio.allocGroups) {
                 for (let fund of alloc.funds) {
                     fund.toBuy = parseFloat((fund.toTarget/portfolio.toTarget*portfolio.cash).toFixed(2));
                 }
             }
+            // set number of shares to buy with cash available
+            if (portfolio.resultShares) {
+                portfolio.cashRem = portfolio.cash;
+                for (let alloc of portfolio.allocGroups) {
+                    for (let fund of alloc.funds) {
+                        fund.toBuy = Math.floor(fund.toBuy/fund.price);
+                        portfolio.cashRem -= fund.toBuy * fund.price;
+                        portfolio.cashRem = portfolio.cashRem.toFixed(2);
+                    }
+                }
+                for (let sortedFund of sortedFunds) {
+                    if (sortedFund.price < portfolio.cashRem) {
+                        for (let alloc of portfolio.allocGroups) {
+                            for (let val of alloc.funds) {
+                                if (sortedFund.ticker == val.ticker) {
+                                    val.toBuy = parseInt(val.toBuy);
+                                    portfolio.cashRem = parseFloat(portfolio.cashRem);
+                                    // console.log('getting here? '+val.ticker+val.toBuy+sortedFund.ticker+val.price)
+                                    val.toBuy ++;
+                                    portfolio.cashRem -= val.price;
+                                    portfolio.cashRem = portfolio.cashRem.toFixed(2);
+                                }
+                            }
+                        }
+                    }
+                }
+            }       
         }
-        /* old algorithm
-
-        if ($scope.rebalanceType == "Buy Only") {
-            //sort funds largest to smallest
-            funds.sort(function (a, b) {
-                return b.price - a.price;
-            })
-            //set target values
-            for (var i = 0; i < funds.length; i++) {
-                funds[i].targetVal = ($scope.holdings() + $scope.cash) * funds[i].alloc / 100;
-            }
-            //set $ toTarget (0 if negative)
-            for (i = 0; i < funds.length; i++) {
-                if (funds[i].targetVal - (funds[i].price * funds[i].shares) <= 0) {
-                    funds[i].toTarget = 0;
-                } else {
-                    funds[i].toTarget = funds[i].targetVal - (funds[i].price * funds[i].shares);
+        if (!portfolio.buyOnly) {
+            portfolio.toTarget = portfolio.totalVal-portfolio.marketVal;
+            // set target values to each allocation group and fund
+            for (let alloc of portfolio.allocGroups) {
+                alloc.targetVal = portfolio.totalVal * alloc.allocation;
+                if (alloc.allocation == 0) alloc.targetVal = 0;
+                else alloc.targetVal = portfolio.totalVal * alloc.allocation/100;
+                for (let fund of alloc.funds) {
+                    alloc.marketVal += fund.price*fund.shares;
                 }
-                totalToTarget += funds[i].toTarget;
-            }
-            //set $ toPurchase (0 if toTarget = 0)
-            for (i = 0; i < funds.length; i++) {
-                if (funds[i].toTarget == 0) {
-                    funds[i].toPurchase = 0;
-                } else {
-                    funds[i].toPurchase = funds[i].toTarget / totalToTarget * $scope.cash;
+                alloc.toTarget = alloc.targetVal - alloc.marketVal;
+                for (let fund of alloc.funds) {
+                    if (fund.alloc == 0) fund.targetVal = 0;
+                    else fund.targetVal = alloc.targetVal * fund.alloc/100;
+                    fund.toTarget = fund.targetVal - fund.price * fund.shares;
+                    fund.toBuy = fund.toTarget.toFixed(2);
                 }
             }
-            //set shares to purchase
-            for (i = 0; i < funds.length; i++) {
-                var leftover = 0;
-                if (funds[i].price == 0) {
-                    break;
+            // set number of shares to buy/sell with cash remaining
+            if (portfolio.resultShares) {
+                portfolio.cashRem = portfolio.cash;
+                for (let alloc of portfolio.allocGroups) {
+                    for (let fund of alloc.funds) {
+                        fund.toBuy = Math.floor(fund.toBuy/fund.price);
+                        portfolio.cashRem -= fund.toBuy * fund.price;
+                        portfolio.cashRem = portfolio.cashRem.toFixed(2);
+                    }
                 }
-                funds[i].toShares = Math.floor(funds[i].toPurchase / funds[i].price);
-                if (i < funds.length - 1) {
-                    leftover = funds[i].toPurchase % funds[i].price;
-                    funds[i + 1].toPurchase += leftover;
-                }
-                if (i == funds.length - 1) {
-                    var cashRem = funds[i].toPurchase % funds[i].price + leftover
-                    $scope.cashRem = cashRem.toFixed(2);
-                }
-            }
-            //set new allocation values
-            var totalBal = 0;
-            for (i = 0; i < funds.length; i++) {
-                totalBal += fundBal(funds[i]);
-            }
-            for (i = 0; i < funds.length; i++) {
-                if (funds[i].price == 0) {
-                    break;
-                }
-                var newAlloc = fundBal(funds[i]) / totalBal * 100;
-                funds[i].newAlloc = newAlloc.toFixed(1) + " %";
-            }
-            console.log("Buy only is working")
+            }  
         }
-        if ($scope.rebalanceType == "Buy & Sell") {
-            //sort funds largest to smallest
-            funds.sort(function (a, b) {
-                return b.price - a.price;
-            })
-            //set total cash available
-            var totalCash = $scope.holdings() + $scope.cash;
-            //set targetShares and shares to purchase
-            for (i = 0; i < funds.length; i++) {
-                funds[i].targetShares = Math.floor(totalCash * (funds[i].alloc / 100) / funds[i].price);
-                funds[i].toShares = funds[i].targetShares - funds[i].shares;
-                console.log("Target Shares = " + funds[i].targetShares);
-                console.log("Target Shares to purchase = " + funds[i].toShares);
-            }
-            //purchase shares
-            for (i = 0; i < funds.length; i++) {
-                if (funds[i].price == 0) {
-                    break;
-                }
-                totalCash -= funds[i].targetShares * funds[i].price;
-                $scope.cashRem = totalCash.toFixed(2);
-            }
-            //set new allocation values
-            totalBal = 0;
-            for (i = 0; i < funds.length; i++) {
-                totalBal += fundBal(funds[i]);
-            }
-            for (i = 0; i < funds.length; i++) {
-                if (funds[i].price == 0) {
-                    break;
-                }
-                newAlloc = fundBal(funds[i]) / totalBal * 100;
-                funds[i].newAlloc = newAlloc.toFixed(1) + " %";
-            }
-            console.log("Buy & Sell is working")
-        }*/
+        if (isNaN(portfolio.cashRem)) portfolio.cashRem = '0.00';
+        if (isNaN(portfolio.marketVal)) portfolio.marketVal = '0.00';
+        if (isNaN(portfolio.totalVal)) portfolio.totalVal = '0.00';
+        $scope.checkAction();
     }
 });
