@@ -134,7 +134,7 @@ app.controller('myCtrl', function ($scope, $http) {
         let count = 0;
         for (let alloc in $scope.portfolios[$scope.selectedIndex].allocGroups) {
             for (let fund in $scope.portfolios[$scope.selectedIndex].allocGroups[alloc].funds) {
-                if ($scope.portfolios[$scope.selectedIndex].allocGroups[alloc].funds[fund].price == "Not Available") count++;
+                if ($scope.portfolios[$scope.selectedIndex].allocGroups[alloc].funds[fund].price == 0) count++;
             }
         }
         if (count == 0) document.getElementById("stock-warning").style.display = "none";
