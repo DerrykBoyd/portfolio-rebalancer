@@ -16,7 +16,7 @@ module.exports = {
     "ui": {
         "port": 3001
     },
-    "files": ["www/css/*.css", "www/js/*.js", "www/index.html"],
+    "files": ["css/*.css"],
     "watchEvents": [
         "change"
     ],
@@ -26,11 +26,11 @@ module.exports = {
     "watchOptions": {
         "ignoreInitial": true
     },
-    "server": ['www'],
+    "server": "www",
     "proxy": false,
     "port": 3000,
     "middleware": false,
-    "serveStatic": [],
+    "serveStatic": ['www'],
     "ghostMode": {
         "clicks": true,
         "scroll": true,
@@ -49,7 +49,7 @@ module.exports = {
     "rewriteRules": [],
     "open": "local",
     "browser": "default",
-    "cors": false,
+    "cors": true,
     "xip": false,
     "hostnameSuffix": false,
     "reloadOnRestart": false,
