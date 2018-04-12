@@ -47,7 +47,7 @@ app.controller('myCtrl', function ($scope, $http) {
         $scope.portfolios = [
             {
                 name: "Portfolio 1",
-                cash: 0,
+                cash: '',
                 marketVal: 0,
                 totalVal: 0,
                 cashRem: 0,
@@ -103,6 +103,7 @@ app.controller('myCtrl', function ($scope, $http) {
     
     $scope.select = function(i) {
         $scope.selectedIndex = i;
+        $scope.portfolio = $scope.portfolios[$scope.selectedIndex];
     };
 
     // function to get JSON portfolios from local storage
@@ -272,7 +273,7 @@ app.controller('myCtrl', function ($scope, $http) {
             }
         )
         if(portfolios.length == 2) document.getElementById('dlt-folio').style.display = 'block';
-        $scope.selectedIndex = portfolios.length - 1;
+        $scope.select(portfolios.length - 1);
         $scope.populateStorage();
     }
     // function to delete a portfolio
