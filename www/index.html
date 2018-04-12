@@ -224,7 +224,7 @@
                         <div class="flex-item">
                             <label class="control-label">Ticker</label>
                             <div id="ticker-input" class="input-group">
-                                <input type="text" ng-model="fund.ticker" ng-change="refreshPrice(fund)" ng-model-options="{debounce: 2000}"
+                                <input id="{{fund.ticker}}-ticker" type="text" ng-model="fund.ticker" ng-change="refreshPrice(fund)" ng-model-options="{debounce: 1000}"
                                     class="form-control">
                             </div>
                         </div>
@@ -235,7 +235,7 @@
                                 </span>
                             </label>
                             <div id="price-input" class="input-group">
-                                <input id="current-price" ng-change="totalValue()" ng-model="fund.price" step="0.01" min="0" class="form-control toggle-input"
+                                <input id="current-price" ng-change="totalValue()" ng-model="fund.price" ng-model-options="{debounce: 500}" step="0.01" min="0" class="form-control toggle-input"
                                     placeholder="...">
                             </div>
                         </div>
@@ -269,7 +269,7 @@
                         <div class="flex-item">
                             <label class="control-label">Action</label>
                             <div id="shares-input" class="input-group">
-                                <input readonly id="{{fund.ticker}}" ng-model="fund.toBuy" class="form-control" placeholder="Buy/Sell">
+                                <input readonly id="{{fund.ticker}}-action" ng-model="fund.toBuy" class="form-control" placeholder="{{portfolio.rebalType}}">
                                 <div class="valid-feedback">Buy {{action}}</div>
                                 <div class="invalid-feedback">Sell {{action}}</div>
                             </div>
@@ -300,9 +300,13 @@
             </div>
         </div>
     </div>
+    <div id="stock-info" class="alert alert-dismissible alert-primary">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        Stock prices are for information only. Prices can be delayed up to 20 minutes. US stock data provided for free by <a href="https://iextrading.com/developer"><strong>IEX.</strong><a/>
+    </div>
     <div class="bg-primary text-white" id="group-warning">Group Allocations should total 100%</div>
     <div class="bg-primary text-white" id="fund-warning">Fund Allocations should total 100% for each group</div>
-    <div class="bg-primary text-white" id="stock-warning">Unable to fetch some prices. Please check stock ticker, refresh price, or enter manually.</div>
+    <div class="bg-primary text-white" id="stock-warning">Some Prices Missing. Please check stock ticker, refresh price, or enter manually.</div>
 </body>
 <!-- scripts -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

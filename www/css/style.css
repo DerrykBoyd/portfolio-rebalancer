@@ -42,14 +42,14 @@
   }
 
   @keyframes spinnerAnimation {
-    0%  {opacity: 1;}
-    75%  {opacity: 1;}
-    100% {opacity: 0;}
+    0%  {opacity: 1; width: 100px; height: 80px;}
+    75%  {opacity: 1; width: 100px; height: 80px;}
+    100% {opacity: 0; width: 0; height: 0;}
   }
   @-webkit-keyframes spinnerAnimation {
-        0%  {opacity: 1;}
-        75%  {opacity: 1;}
-        100% {opacity: 0;}
+        0%  {opacity: 1; width: 100px; height: 80px;}
+        75%  {opacity: 1; width: 100px; height: 80px;}
+        100% {opacity: 0; width: 0; height: 0;}
   }
   
   .spinner > div {
@@ -377,6 +377,14 @@ h4 {
 
 .flex-item {
     flex: 1 0 100px;
+}
+
+#stock-info {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    margin: 0;
 }
 
 #stock-warning, #group-warning, #fund-warning {
