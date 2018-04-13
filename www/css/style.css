@@ -381,10 +381,14 @@ h4 {
 
 #stock-info {
     position: fixed;
-    bottom: 0;
-    width: 100%;
+    bottom: 2rem;
+    left: 50%;
+    transform: translate(-50%);
+    width: 500px;
+    max-width: 90%;;
     text-align: center;
     margin: 0;
+    border-radius: 1rem;
 }
 
 #stock-warning, #group-warning, #fund-warning {
@@ -394,7 +398,6 @@ h4 {
     width: 100%;
     min-height: 2rem;
     font-size: 1rem;
-    font-weight: bold;
     text-align: center;
     padding: 0.25rem;
 }

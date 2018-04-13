@@ -281,6 +281,7 @@ app.controller('myCtrl', function ($scope, $http) {
         if ($scope.portfolios.length > 1) $scope.portfolios.splice(index, 1);
         if (index > 0) $scope.selectedIndex -= 1;
         if ($scope.portfolios.length == 1) document.getElementById('dlt-folio').style.display = 'none';
+        $scope.select($scope.portfolios.length - 1);
         $scope.populateStorage();
     }
 
@@ -345,6 +346,7 @@ app.controller('myCtrl', function ($scope, $http) {
         if (portfolio.buyOnly) {
             portfolio.toTarget = 0;
             var sortedFunds = [];
+            Number(portfolio.cashRem);
             // set target values for each allocation group and fund
             for (let alloc of portfolio.allocGroups) {
                 alloc.toTarget = 0;
@@ -384,13 +386,12 @@ app.controller('myCtrl', function ($scope, $http) {
                     }
                 }
                 for (let sortedFund of sortedFunds) {
-                    if (sortedFund.price < portfolio.cashRem) {
+                    if (sortedFund.price < parseInt(portfolio.cashRem)) {
                         for (let alloc of portfolio.allocGroups) {
                             for (let val of alloc.funds) {
                                 if (sortedFund.ticker == val.ticker) {
                                     val.toBuy = parseInt(val.toBuy);
                                     portfolio.cashRem = parseFloat(portfolio.cashRem);
-                                    // console.log('getting here? '+val.ticker+val.toBuy+sortedFund.ticker+val.price)
                                     val.toBuy ++;
                                     portfolio.cashRem -= val.price;
                                     portfolio.cashRem = portfolio.cashRem.toFixed(2);
