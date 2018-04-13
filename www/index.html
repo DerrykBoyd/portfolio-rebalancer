@@ -81,14 +81,24 @@
                     <a ng-click="setTheme('spacelab')" class="dropdown-item" href="#">SpaceLab</a>
                 </div>
             </li>
-            <li class="nav-item" ng-repeat="portfolio in portfolios">
+            <li class="nav-item" ng-repeat="portfolio in portfolios track by $index">
                 <a ng-click="select($index)" ng-class="{active: $index===selectedIndex}" class="nav-link" data-toggle="tab"
                     href="#">{{portfolio.name}}</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" ng-click="addPortfolio()">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
                     <i class="fas fa-plus-circle"></i>
                 </a>
+                <div class="dropdown-menu">
+                    <h6 class="dropdown-header">Choose a template</h6>
+                    <a class="dropdown-item" href="#" ng-click="addPortfolio('New Blank')">Blank Portfolio</a>
+                    <h6 class="dropdown-header">Canadian Couch Potato</h6>
+                    <a class="dropdown-item" href="#" ng-click="addTemplate('CCP Consersative',70,10,20)">Conserative</a>
+                    <a class="dropdown-item" href="#" ng-click="addTemplate('CCP Cautious',55,15,30)">Cautious</a>
+                    <a class="dropdown-item" href="#" ng-click="addTemplate('CCP Balanced',40,20,40)">Balanced</a>
+                    <a class="dropdown-item" href="#" ng-click="addTemplate('CCP Assertive',25,25,50)">Assertive</a>
+                    <a class="dropdown-item" href="#" ng-click="addTemplate('CCP Aggressive',10,30,60)">Aggressive</a>
+                  </div>
             </li>
         </ul>
         <div id="options-top" class="card-body">

@@ -212,11 +212,11 @@ app.controller('myCtrl', function ($scope, $http) {
         $scope.populateStorage();
     }
     // function to add an allocation group
-    $scope.addAllocGroup = function () {
+    $scope.addAllocGroup = function (name = '', alloc = '') {
         $scope.portfolio.allocGroups.push(
             {
-                name: "",
-                allocation: 0,
+                name: name,
+                allocation: alloc,
                 funds: []
             }
         )
@@ -257,12 +257,11 @@ app.controller('myCtrl', function ($scope, $http) {
     }
 
     // function to add a new portfolio
-    $scope.addPortfolio = function () {
+    $scope.addPortfolio = function (name = 'New Portfolio') {
         var portfolios = $scope.portfolios;
-        var num = portfolios.length + 1;
         portfolios.push(
             {
-                name: "Portfolio " + num,
+                name: name,
                 cash: 0,
                 cashRem: 0,
                 buyOnly: true,
@@ -276,6 +275,22 @@ app.controller('myCtrl', function ($scope, $http) {
         $scope.select(portfolios.length - 1);
         $scope.populateStorage();
     }
+
+    // add sample portfolio templates
+    $scope.addTemplate = function(name, f1, f2, f3) {
+        if($scope.portfolios.length < 10) {
+            $scope.addPortfolio(name);
+            let pIndex = $scope.selectedIndex;
+            $scope.addAllocGroup('Canada Stocks', f2);
+            $scope.addAllocGroup('World Stocks', f3);
+            $scope.addAllocGroup('Bonds', f1);
+            $scope.addFund(pIndex, 2, 'ZAG', 100);
+            $scope.addFund(pIndex, 0, 'VCN', 100);
+            $scope.addFund(pIndex, 1, 'XAW', 100);
+            $scope.populateStorage();
+        }
+    }
+
     // function to delete a portfolio
     $scope.deletePortfolio = function (index) {
         if ($scope.portfolios.length > 1) $scope.portfolios.splice(index, 1);
