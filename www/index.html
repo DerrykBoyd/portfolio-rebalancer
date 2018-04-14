@@ -194,7 +194,7 @@
         <div class="card border-secondary" ng-repeat="alloc in portfolios[selectedIndex].allocGroups track by $index"
             ng-init="aIndex = $index">
             <div id="card-header" class="card-header text-primary flex-container">
-                <div class="flex-item-title">
+                <div class="flex-item-title alloc-box">
                     <form>
                         <label class="control-label">Allocation Group</label>
                         <input class="form-control alloc-name" ng-model="alloc.name" placeholder="Group Name">

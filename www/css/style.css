@@ -187,6 +187,7 @@ nav {
 
 .alloc-name {
     max-width: 300px;
+    margin-top: 0.25rem;
 }
 
 #fund-card {

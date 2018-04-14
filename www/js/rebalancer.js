@@ -125,11 +125,11 @@ app.controller('myCtrl', function ($scope, $http) {
             //console.log(response);
             showStockWarning();
             $scope.totalValue();
-        }, function errorCallback(response) {
+        }, function errorCallback() {
             //error code here
             fund.price = '';
             showStockWarning();
-            console.log('API call error occurred: ' + response);
+            console.log('API call error occurred');
         });
     }
 
@@ -288,6 +288,7 @@ app.controller('myCtrl', function ($scope, $http) {
             $scope.addFund(pIndex, 0, 'VCN', 100);
             $scope.addFund(pIndex, 1, 'XAW', 100);
             $scope.populateStorage();
+            $scope.refreshPrices();
         }
     }
 
