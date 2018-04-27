@@ -101,18 +101,18 @@
     display: inline-block;
 }
 
-#main-title>h3 {
-    font-size: 1.3rem;
-    margin-top: 1rem;
+#nav-title {
+    font-size: 1.5rem;
+    position: relative;
+    top: 4px;
 }
 
 #main-title>img {
     height: 40px;
-    margin-bottom: 8px;
     margin-right: 8px;
 }
 
-nav {
+#pr-nav {
     padding: 0.5rem 0.75rem;
     margin-bottom: 0.5rem;
 }
@@ -130,7 +130,7 @@ nav {
 }
 
 .nav-tabs {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
 }
 
 #title-tab:hover {
@@ -145,7 +145,7 @@ nav {
 
 
 #options-top, #options-bottom {
-    padding: 0.25rem 1rem;
+    padding: 0.25rem 0.25rem 0.5rem;
     line-height: 1;
 }
 
@@ -168,21 +168,23 @@ nav {
 }
 
 .card {
-    margin: 0.75rem auto;
-    border-radius: 10px;
+    margin: 0.3rem auto;
+    border-width: 1px 0 0 0 !important;
 }
 
 #alloc-card {
-    padding : 0.6rem;
+    padding : 0 0.25rem;
 }
 
 #card-header {
-    padding: 0 1rem;
+    padding: 0 0.25rem 0.25rem;
+    border-bottom: 0;
+    border-top: 5px;
 }
 
 .flex-item-title {
     flex: 1 0 125px;
-    margin: auto 0.25rem 0.5rem auto;
+    margin: auto 0.5rem 0.25rem 0;
 }
 
 .alloc-name {
@@ -191,12 +193,16 @@ nav {
 }
 
 #fund-card {
-    padding: 0rem 0.75rem 0.75rem;
     margin-top: 0;
 }
 
-.add-fund-button {
-    margin-left: 0.3rem;
+#add-fund-btn {
+    position: relative;
+    top: -0.25rem;
+    font-size: 1.1rem;
+    float: right;
+    margin-right: 0.6rem;
+    cursor: pointer;
 }
 
 .custom-select {
@@ -233,8 +239,8 @@ nav {
 }
 
 .control-label {
-    font-size: 1rem;
-    margin: 0.5rem 0 0.25rem;
+    font-size: 0.9rem;
+    margin:0.25rem 0 0;
 }
 
 .button-area {
@@ -301,7 +307,7 @@ h4 {
     display: inline;
     margin: 0 0.5rem;
     padding: 0;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     cursor: pointer;
 }
 
@@ -368,11 +374,10 @@ h4 {
 #delete-fund {
     font-size: 1.1rem;
     position: absolute;
-    top: 0;
+    top: 0.25rem;
     right: 0;
     width: 25px;
     height: 25px;
-    margin: 10px 5px;
     cursor: pointer;
 }
 
@@ -389,7 +394,7 @@ h4 {
     max-width: 90%;;
     text-align: center;
     margin: 0;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
 }
 
 #stock-warning, #group-warning, #fund-warning {

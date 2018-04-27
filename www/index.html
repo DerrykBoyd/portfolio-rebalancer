@@ -32,11 +32,11 @@
         <div class="rect5"></div>
     </div>
 </div>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav id="pr-nav" class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div id="nav-content">
         <div id="main-title" class="d-inline-block">
             <img src="images/navbar-img.png">
-            <h3 class="text-white">Portfolio Rebalancer</h3>
+            <h3 id="nav-title" class="text-white">Portfolio Rebalancer</h3>
         </div>
         <!-- <div id="nav-links" class="d-inline-block">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
@@ -191,9 +191,9 @@
                 </div>
             </div>
         </div>
-        <div class="card border-secondary" ng-repeat="alloc in portfolios[selectedIndex].allocGroups track by $index"
+        <div class="card border-primary" ng-repeat="alloc in portfolios[selectedIndex].allocGroups track by $index"
             ng-init="aIndex = $index">
-            <div id="card-header" class="card-header text-primary flex-container">
+            <div id="card-header" class="text-primary border-primary flex-container">
                 <div class="flex-item-title alloc-box">
                     <form>
                         <label class="control-label">Allocation Group</label>
@@ -226,7 +226,7 @@
                 </div>
             </div>
             <div id="alloc-card" class="card-body">
-                <div id="fund-card" class="card bg-light" ng-repeat="fund in alloc.funds track by $index">
+                <div id="fund-card" class="card" ng-repeat="fund in alloc.funds track by $index">
                     <div id="delete-fund" ng-click="removeFund(selectedIndex, aIndex, $index)">
                         <i class="far fa-trash-alt text-danger"></i>
                     </div>
@@ -286,10 +286,8 @@
                         </div>
                     </div>
                 </div>
-                <div id="options" class="flex-container">
-                    <div id="button-area">
-                        <button type="button" ng-click="addFund(selectedIndex, $index, '', '')" class="btn btn-outline-primary add-fund-button">Add Fund</button>
-                    </div>
+                <div id="add-fund-btn" ng-click="addFund(selectedIndex, $index, '', '')">
+                    <i class="fa fa-plus-circle text-success"></i>
                 </div>
             </div>
         </div>
