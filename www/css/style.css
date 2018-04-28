@@ -139,7 +139,32 @@
 }
 
 .flex-item-options {
-    flex: 1 0 110px;
+    flex: 1 0 100px;
+    margin-right: 0.5rem;
+    max-width: 180px;
+}
+
+.ro-label {
+    margin-left: 0.5rem !important;
+}
+
+.ro-calc, .ro-prepend {
+    padding: 0.3rem 0.5rem;
+    margin-top: 0.25rem;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.ro-prepend {
+    padding-right: 0;
+}
+
+.ro-calc {
+    padding-right: 0;
+}
+
+.ro-box {
+    border-bottom: 1px solid;
     margin-right: 0.5rem;
 }
 
@@ -170,6 +195,7 @@
 .card {
     margin: 0.3rem auto;
     border-width: 1px 0 0 0 !important;
+    border-radius: 0 !important
 }
 
 #alloc-card {
@@ -183,7 +209,7 @@
 }
 
 .flex-item-title {
-    flex: 1 0 125px;
+    flex: 1 0 110px;
     margin: auto 0.5rem 0.25rem 0;
 }
 
@@ -209,7 +235,7 @@
     max-width: 150px;
 }
 
-#cash, #total-val, #market-val {
+#cash, #total-val, #market-val, .ro-container {
     max-width: 160px;
     margin-left: 0;
 }
@@ -361,6 +387,24 @@ h4 {
 
 #ticker-input, #price-input, #shares-input {
     width: 100%;
+}
+
+.action {
+    background-color: white !important;
+    border-width: 0 0 1px 0 !important;
+    border-color: #f8f9fa !important;
+}
+
+.is-valid {
+    color: #3FB618 !important;
+    border-color: #3FB618 !important;
+    font-weight: bold;
+}
+
+.is-invalid {
+    color: #FF0039 !important;
+    border-color: #FF0039 !important;
+    font-weight: bold;
 }
 
 #fund-card .flex-item{

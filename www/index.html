@@ -73,11 +73,8 @@
                     <a ng-click="setTheme('flatly')" class="dropdown-item" href="#">Flatly</a>
                     <a ng-click="setTheme('journal')" class="dropdown-item" href="#">Journal</a>
                     <a ng-click="setTheme('litera')" class="dropdown-item" href="#">Litera</a>
-                    <a ng-click="setTheme('materia')" class="dropdown-item" href="#">Materia</a>
                     <a ng-click="setTheme('minty')" class="dropdown-item" href="#">Minty</a>
                     <a ng-click="setTheme('pulse')" class="dropdown-item" href="#">Pulse</a>
-                    <a ng-click="setTheme('simplex')" class="dropdown-item" href="#">Simplex</a>
-                    <a ng-click="setTheme('sketchy')" class="dropdown-item" href="#">Sketchy</a>
                     <a ng-click="setTheme('spacelab')" class="dropdown-item" href="#">SpaceLab</a>
                 </div>
             </li>
@@ -128,12 +125,12 @@
                                     <div class="dropdown-divider"></div>
                                     <div class="dropdown-item custom-control custom-radio">
                                         <input id="customRadio3" name="dollar-shares" class="custom-control-input" type="radio" ng-value="true"
-                                            ng-model="portfolios[selectedIndex].resultShares" ng-change="rebalance()">
+                                            ng-model="portfolios[selectedIndex].resultShares" ng-change="currAlloc()">
                                         <label class="custom-control-label" for="customRadio3">Results in Shares</label>
                                     </div>
                                     <div class="dropdown-item custom-control custom-radio">
                                         <input id="customRadio4" name="dollar-shares" class="custom-control-input" type="radio" ng-value="false"
-                                            ng-model="portfolios[selectedIndex].resultShares" ng-change="rebalance()">
+                                            ng-model="portfolios[selectedIndex].resultShares" ng-change="currAlloc()">
                                         <label class="custom-control-label" for="customRadio4">Results in $</label>
                                     </div>
                                 </div>
@@ -141,15 +138,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex-item-options">
-                    <div class="form-inline">
-                        <label class="control-label text-primary">Market Value</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
-                            </div>
-                            <input readonly id="market-val" type="text" ng-model="portfolios[selectedIndex].marketVal" class="form-control">
-                        </div>
+                <div class="flex-item-options ro-container">
+                    <div class="text-primary control-label ro-label">Market Value</div>
+                    <div class="ro-box border-light">
+                        <div class="ro-prepend d-inline-block">$</div>
+                        <div class="ro-calc d-inline-block">{{ portfolios[selectedIndex].marketVal }}</div>
                     </div>
                 </div>
                 <div class="flex-item-options">
@@ -164,26 +157,18 @@
                         </div>
                     </div>
                 </div>
-                <div id="total-val" class="flex-item-options">
-                    <div class="form-inline">
-                        <label class="control-label text-primary">Total Value</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
-                            </div>
-                            <input readonly id="total-val" type="text" ng-model="portfolios[selectedIndex].totalVal" class="form-control">
-                        </div>
+                <div class="flex-item-options ro-container">
+                    <div class="text-primary control-label ro-label">Total Value</div>
+                    <div class="ro-box border-light">
+                        <div class="ro-prepend d-inline-block">$</div>
+                        <div class="ro-calc d-inline-block">{{ portfolios[selectedIndex].totalVal }}</div>
                     </div>
                 </div>
-                <div id="total-val" ng-show="portfolios[selectedIndex].resultShares" class="flex-item-options">
-                    <div class="form-inline">
-                        <label class="control-label text-primary">$ Remaining</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
-                            </div>
-                            <input readonly id="cash-rem" type="text" ng-model="portfolios[selectedIndex].cashRem" class="form-control">
-                        </div>
+                <div ng-show="portfolios[selectedIndex].resultShares" class="flex-item-options ro-container">
+                    <div class="text-primary control-label ro-label">$ Remaining</div>
+                    <div class="ro-box border-light">
+                        <div class="ro-prepend d-inline-block">$</div>
+                        <div class="ro-calc d-inline-block">{{ portfolios[selectedIndex].cashRem }}</div>
                     </div>
                 </div>
                 <div class="flex-item-options button-area">
@@ -200,13 +185,11 @@
                         <input class="form-control alloc-name" ng-model="alloc.name" placeholder="Group Name">
                     </form>
                 </div>
-                <div class="flex-item-title alloc-box">
-                    <label class="control-label">Allocation</label>
-                    <div id="alloc-current" class="input-group">
-                        <input readonly ng-model="alloc.currAlloc" step="0.1" min="0" class="form-control alloc-input" placeholder="0">
-                        <div class="input-group-append">
-                            <span class="input-group-text">%</span>
-                        </div>
+                <div class="flex-item-title ro-container text-secondary">
+                    <div class="text-primary control-label ro-label">Old Allocation</div>
+                    <div class="ro-box border-light">
+                        <div class="ro-calc d-inline-block">{{ alloc.currAlloc }}</div>
+                        <div class="ro-prepend d-inline-block">%</div>
                     </div>
                 </div>
                 <div class="flex-item-title alloc-box">
@@ -220,6 +203,13 @@
                             </div>
                         </div>
                     </form>
+                </div>
+                <div class="flex-item-title ro-container text-secondary">
+                    <div class="text-primary control-label ro-label">New Allocation</div>
+                    <div class="ro-box border-light">
+                        <div class="ro-calc d-inline-block">{{ alloc.newAlloc }}</div>
+                        <div class="ro-prepend d-inline-block">%</div>
+                    </div>
                 </div>
                 <div class="flex-item-title">
                     <button type="button" ng-click="deleteAllocGroup($index)" id="delete-alloc-group" class="btn btn-outline-danger delete-button">Remove Group</button>
@@ -256,14 +246,11 @@
                                     class="form-control toggle-input" placeholder="0">
                             </div>
                         </div>
-                        <div class="flex-item alloc-box">
-                            <label class="control-label">Allocation</label>
-                            <div id="alloc-current" class="input-group">
-                                <input readonly ng-model="fund.currAlloc" step="0.1" min="0" max="100" class="form-control alloc-input"
-                                    placeholder="0">
-                                <div class="input-group-append">
-                                    <span class="input-group-text">%</span>
-                                </div>
+                        <div class="flex-item ro-container text-secondary">
+                            <div class="control-label ro-label">Sub-Allocation</div>
+                            <div class="ro-box border-light">
+                                <div class="ro-calc d-inline-block">{{ fund.currAlloc }}</div>
+                                <div class="ro-prepend d-inline-block">%</div>
                             </div>
                         </div>
                         <div class="flex-item alloc-box">
@@ -277,11 +264,11 @@
                             </div>
                         </div>
                         <div class="flex-item">
-                            <label class="control-label">Action</label>
+                            <label class="control-label ro-label">Action</label>
                             <div id="shares-input" class="input-group">
-                                <input readonly id="{{fund.ticker}}-action" ng-model="fund.toBuy" class="form-control" placeholder="{{portfolio.rebalType}}">
-                                <div class="valid-feedback">Buy {{action}}</div>
-                                <div class="invalid-feedback">Sell {{action}}</div>
+                                <input readonly id="{{fund.ticker}}-action" ng-model="fund.toBuy" class="form-control action border-light" placeholder="{{portfolio.rebalType}}">
+                                <div class="valid-feedback ro-label">Buy {{action}}</div>
+                                <div class="invalid-feedback ro-label">Sell {{action}}</div>
                             </div>
                         </div>
                     </div>

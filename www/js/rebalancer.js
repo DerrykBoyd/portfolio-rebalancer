@@ -59,18 +59,21 @@ app.controller('myCtrl', function ($scope, $http) {
                         name: "Canada Stocks",
                         allocation: 20,
                         currAlloc: '',
+                        newAlloc: '',
                         funds: []
                     },
                     {
                         name: "World Stocks",
                         allocation: 40,
                         currAlloc: '',
+                        newAlloc: '',
                         funds: []
                     },
                     {
                         name: "Bonds",
                         allocation: 40,
                         currAlloc: '',
+                        newAlloc: '',
                         funds: []
                     }
                 ]
@@ -217,6 +220,8 @@ app.controller('myCtrl', function ($scope, $http) {
             {
                 name: name,
                 allocation: alloc,
+                currAlloc: '',
+                newAlloc: '',
                 funds: []
             }
         )
@@ -325,6 +330,7 @@ app.controller('myCtrl', function ($scope, $http) {
         let portfolio = $scope.portfolio;
         portfolio.buyOnly ? portfolio.rebalType = 'Buy Only' : portfolio.rebalType = 'Buy/Sell';
         let total = parseFloat(portfolio.marketVal) + parseFloat(portfolio.cash);
+        if (!portfolio.cash) total = parseFloat(portfolio.marketVal);
         portfolio.totalVal = total.toFixed(2);
         $scope.currAlloc();
         showStockWarning();
@@ -337,6 +343,16 @@ app.controller('myCtrl', function ($scope, $http) {
             total += fund.price * fund.shares;
         }
         return total;
+    }
+
+    function newAlloc(group) {
+        let newBal = null;
+        let portfolio = $scope.portfolio;
+        for (let fund of group.funds) {
+            if (portfolio.resultShares) newBal += (fund.shares + fund.toBuy) * fund.price;
+            else newBal += (fund.shares * fund.price) + Number(fund.toBuy);
+        }
+        return newBal / (portfolio.totalVal - portfolio.cashRem) * 100;
     }
 
     //calculate current allocation
@@ -353,6 +369,10 @@ app.controller('myCtrl', function ($scope, $http) {
             else alloc.currAlloc = groupAlloc.toFixed(2);
         }
         $scope.rebalance();
+        for (let alloc of portfolio.allocGroups) {
+            alloc.newAlloc = (newAlloc(alloc)).toFixed(2);
+            if (!newAlloc(alloc)) alloc.newAlloc = 0;
+        } 
         $scope.populateStorage();
     }
 
