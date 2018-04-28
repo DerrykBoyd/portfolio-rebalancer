@@ -89,7 +89,7 @@ app.controller('myCtrl', function ($scope, $http) {
         $scope.refreshPrices();
         $scope.checkFundAlloc();
         $scope.checkGroupAlloc();
-        $scope.rebalance();
+        $scope.currAlloc();
         if ($scope.portfolios.length == 1) {
             document.getElementById('dlt-folio').style.display = 'none';
         }
@@ -170,6 +170,7 @@ app.controller('myCtrl', function ($scope, $http) {
             }
         }
         $scope.totalValue();
+        $scope.currAlloc();
     }
     //check total allocations total 100% and show warning if not
     $scope.checkGroupAlloc = function () {
@@ -321,7 +322,7 @@ app.controller('myCtrl', function ($scope, $http) {
             for (let fund of alloc.funds) total += fund.price * fund.shares;
         }
         portfolio.marketVal = total.toFixed(2);
-        $scope.rebalance();
+        $scope.currAlloc();
         $scope.populateStorage();
     }
     //total portfolio value, returns sum of all stock values + cash available
